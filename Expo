@@ -1,0 +1,6 @@
+# 1) Crear el proyecto base Expo
+npx create-expo-app encuesta-app
+cd encuesta-app
+
+# 2) Dependencias
+npm i @supabase/supabase-js expo-image-picker
