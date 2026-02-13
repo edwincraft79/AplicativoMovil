@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AplicacionMovil.Pages.MisOtPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Barra fija -->
+        <Grid Grid.Row="0"
+              RowDefinitions="Auto,Auto"
+              ColumnDefinitions="Auto,*,Auto,Auto"
+              Padding="12,10"
+              BackgroundColor="#E5E7EB">
+
+            <Button Grid.Row="0" Grid.Column="0"
+                    Text="Retornar"
+                    FontSize="16"
+                    BackgroundColor="#16A34A"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Padding="10,4"
+                    Clicked="OnVolverInicioClicked" />
+
+            <Label Grid.Row="0" Grid.Column="1"
+                   Text="Mis Órdenes de Trabajo"
+                   FontSize="16"
+                   FontAttributes="Bold"
+                   TextColor="#111827"
+                   VerticalOptions="Center"
+                   Margin="10,0,0,0" />
+
+            <Button Grid.Row="0" Grid.Column="2"
+                    Text="Historial"
+                    FontSize="12"
+                    BackgroundColor="#2563EB"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Padding="10,2"
+                    Margin="6,0,0,0"
+                    Clicked="OnHistorialClicked" />
+
+            <Button Grid.Row="0" Grid.Column="3"
+                    Text="Salir"
+                    FontSize="12"
+                    BackgroundColor="#DC2626"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Padding="10,2"
+                    Margin="6,0,0,0"
+                    Clicked="OnLogoutClicked" />
+
+            <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4"
+                    Text="Ver mapa de OTs"
+                    BackgroundColor="#2563EB"
+                    TextColor="White"
+                    CornerRadius="12"
+                    HeightRequest="44"
+                    Margin="0,8,0,0"
+                    Clicked="OnVerMapa" />
+        </Grid>
+
+        <!-- Contenido -->
+        <RefreshView Grid.Row="1"
+                     x:Name="refreshView"
+                     RefreshColor="#2563EB"
+                     Refreshing="OnRefreshOts">
+
+            <ScrollView>
+                <VerticalStackLayout Padding="16" Spacing="12">
+                    <Label x:Name="lblEstado"
+                       Text="Cargando..."
+                       FontSize="12"
+                       TextColor="#6B7280"
+                       Margin="2,0,2,6" />
+
+                    <VerticalStackLayout x:Name="cvOrdenes"
+                     Spacing="10"
+                     BindableLayout.ItemsSource="{Binding Ots}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Padding="14"
+                                       CornerRadius="16"
+                                       HasShadow="False"
+                                       BorderColor="#E5E7EB"
+                                       BackgroundColor="White">
+
+                                    <VerticalStackLayout Spacing="4">
+                                        <Label Text="{Binding CodigoOt}"
+                                               FontAttributes="Bold"
+                                               FontSize="16"
+                                               TextColor="#111827" />
+
+                                        <Label Text="{Binding CodigoReclamo}" />
+                                        <Label Text="{Binding Sucursal}" />
+                                        <Label Text="{Binding FechaHoraReclamo}" />
+                                        <Label Text="{Binding TipoReclamo}" />
+                                        <Label Text="{Binding Estado}" />
+
+                                        <HorizontalStackLayout Spacing="10" Margin="0,10,0,0">
+                                            <Button Text="Ruta"
+                                                    BackgroundColor="#4F46E5"
+                                                    TextColor="White"
+                                                    CornerRadius="10"
+                                                    Clicked="OnRutaClicked" />
+
+                                            <Button Text="Ejecutar"
+                                                    BackgroundColor="#4F46E5"
+                                                    TextColor="White"
+                                                    CornerRadius="10"
+                                                    Clicked="OnEjecutarClicked" />
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+
+                                </Frame>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </ScrollView>
+        </RefreshView>
+
+    </Grid>
+</ContentPage>

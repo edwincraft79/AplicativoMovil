@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AplicacionMovil.Pages.MainPage">
+
+    <ScrollView>
+        <Grid Padding="20">
+            <VerticalStackLayout Spacing="25">
+
+                <!-- Título -->
+                <Label Text="Menú principal"
+                       FontSize="26"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center" />
+
+                <!-- Primer botón -->
+                <Button Text="Órdenes de trabajo"
+                        x:Name="btnOT"
+                        HeightRequest="55"
+                        CornerRadius="10"
+                        BackgroundColor="#0F1A4F"
+                        TextColor="White"
+                        Clicked="OnOtClicked"/>
+
+                <!-- Botón reservado para futuro -->
+                <Button Text="Actividades móviles"
+                        x:Name="btnActividades"
+                        HeightRequest="55"
+                        CornerRadius="10"
+                        BackgroundColor="#3E5BA9"
+                        TextColor="White"
+                        Clicked="OnActividadesClicked"
+                        IsVisible="False" />
+
+                <!-- Botón reservado para futuro -->
+                <Button Text="Historial de reportes"
+                        x:Name="btnHistorial"
+                        HeightRequest="55"
+                        CornerRadius="10"
+                        BackgroundColor="#6079C0"
+                        TextColor="White"
+                        Clicked="OnHistorialClicked"
+                        IsVisible="False" />
+
+                <!-- Cerrar Sesión -->
+                <Button Text="Cerrar sesión"
+                        x:Name="btnLogout"
+                        HeightRequest="50"
+                        CornerRadius="10"
+                        BackgroundColor="#B71C1C"
+                        TextColor="White"
+                        Clicked="OnLogoutClicked" />
+
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

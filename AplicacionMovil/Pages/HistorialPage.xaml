@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="AplicacionMovil.Pages.HistorialPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Shell.NavBarIsVisible="False"
+    Title="">
+
+	<!-- GRID PRINCIPAL: fila 0 = barra fija / fila 1 = contenido desplazable -->
+	<Grid RowDefinitions="Auto,*">
+
+		<!-- 🔵 BARRA SUPERIOR FIJA (ESTILO IDÉNTICO A MIS OT) -->
+		<Grid Grid.Row="0"
+              ColumnDefinitions="Auto,*"
+              Padding="16,12"
+              BackgroundColor="White">
+			<!-- Título azul -->
+			<Label Grid.Column="1"
+                   Text="Historial offline"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="#2563EB"
+                   HorizontalOptions="End"
+                   VerticalOptions="Center" />
+			
+			<!-- Botón volver (MIS OT) -->
+			<Button Grid.Column="0"
+                    Text="← MIS OT"
+                    FontSize="14"
+					FontAttributes="Bold"
+					BackgroundColor="#2563EB"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Clicked="OnBackClicked" />
+		</Grid>
+
+		<!-- 📜 CONTENIDO DESPLAZABLE -->
+		<ScrollView Grid.Row="1">
+			<VerticalStackLayout Padding="16" Spacing="10">
+
+				<Label Text="Deslice a la derecha los PENDIENTES para enviarlos al servidor, y a la izquierda para ELIMINAR."
+                       FontSize="13"
+                       TextColor="Gray" />
+
+				<!-- LISTA DEL HISTORIAL -->
+				<CollectionView x:Name="cvHistorial"
+                                SelectionMode="None"
+                                Margin="0,10,0,0">
+
+					<CollectionView.ItemTemplate>
+						<DataTemplate>
+
+							<SwipeView>
+
+								<!-- Izquierda para ENVIAR -->
+								<SwipeView.LeftItems>
+									<SwipeItems>
+										<SwipeItem Text="Enviar"
+                                                   BackgroundColor="Green"
+                                                   Invoked="OnEnviarPendienteInvoked" />
+									</SwipeItems>
+								</SwipeView.LeftItems>
+
+								<!-- Derecha para ELIMINAR -->
+								<SwipeView.RightItems>
+									<SwipeItems>
+										<SwipeItem Text="Eliminar"
+                                                   BackgroundColor="Red"
+                                                   Invoked="OnEliminarInvoked" />
+									</SwipeItems>
+								</SwipeView.RightItems>
+
+								<!-- Tarjeta -->
+								<Frame Margin="0,0,0,10"
+                                       Padding="10"
+                                       CornerRadius="14"
+                                       HasShadow="False"
+                                       BorderColor="#E5E7EB"
+                                       BackgroundColor="White">
+
+									<VerticalStackLayout Spacing="3">
+
+										<HorizontalStackLayout>
+											<Label Text="{Binding CodigoReclamo}"
+                                                   FontAttributes="Bold"
+                                                   FontSize="15" />
+											<Label Text=" • "
+                                                   FontSize="15" />
+											<Label Text="{Binding Usuario}"
+                                                   FontSize="13"
+                                                   TextColor="#4B5563" />
+										</HorizontalStackLayout>
+
+										<Label Text="{Binding Fecha}"
+                                               FontSize="12"
+                                               TextColor="#6B7280" />
+
+										<Label Text="{Binding ClasificacionReclamo}"
+                                               FontSize="13" />
+
+										<Label FontSize="12"
+                                               FontAttributes="Bold"
+                                               HorizontalOptions="End">
+											<Label.Triggers>
+												<DataTrigger TargetType="Label"
+                                                             Binding="{Binding Enviado}"
+                                                             Value="True">
+													<Setter Property="Text" Value="ENVIADO" />
+													<Setter Property="TextColor" Value="#16A34A" />
+												</DataTrigger>
+
+												<DataTrigger TargetType="Label"
+                                                             Binding="{Binding Enviado}"
+                                                             Value="False">
+													<Setter Property="Text" Value="PENDIENTE" />
+													<Setter Property="TextColor" Value="#F97316" />
+												</DataTrigger>
+											</Label.Triggers>
+										</Label>
+
+									</VerticalStackLayout>
+								</Frame>
+							</SwipeView>
+
+						</DataTemplate>
+					</CollectionView.ItemTemplate>
+
+				</CollectionView>
+
+			</VerticalStackLayout>
+		</ScrollView>
+
+	</Grid>
+</ContentPage>

@@ -1,0 +1,9 @@
+<ContentPage
+    x:Class="AplicacionMovil.Pages.DeficienciasMapPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Mapa de Deficiencias">
+
+    <WebView x:Name="MapaWeb"
+             Navigating="MapaWeb_Navigating" />
+</ContentPage>

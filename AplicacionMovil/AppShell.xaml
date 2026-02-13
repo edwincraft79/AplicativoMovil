@@ -1,0 +1,27 @@
+<Shell
+    x:Class="AplicacionMovil.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:AplicacionMovil.Pages"
+    FlyoutBehavior="Disabled">
+
+    <!-- LOGIN -->
+    <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate pages:LoginPage}" />
+
+    <!-- INICIO (después de login) -->
+    <ShellContent Route="HomePage" ContentTemplate="{DataTemplate pages:HomePage}" />
+
+    <!-- MÓDULO: Atención Reclamos (OT) -->
+    <ShellContent Route="MisOtPage" ContentTemplate="{DataTemplate pages:MisOtPage}" />
+
+    <!-- MÓDULO: Osinergmin 228 (placeholder por ahora) -->
+    <ShellContent Route="DeficienciasHomePage" ContentTemplate="{DataTemplate pages:DeficienciasHomePage}" />
+    <ShellContent Route="MisDeficienciasPage" ContentTemplate="{DataTemplate pages:MisDeficienciasPage}" />
+    <ShellContent Route="DeficienciasMapPage" ContentTemplate="{DataTemplate pages:DeficienciasMapPage}" />
+
+    <!-- MÓDULO: Calidad de Producto (placeholder por ahora) -->
+    <ShellContent
+        Route="CalidadProductoHomePage"
+        ContentTemplate="{DataTemplate pages:CalidadProductoHomePage}" />
+
+</Shell>

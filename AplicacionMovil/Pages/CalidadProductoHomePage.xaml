@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AplicacionMovil.Pages.CalidadProductoHomePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    BackgroundColor="#F3F4F6"
+    Title="">
+
+    <Grid Padding="20">
+        <ScrollView>
+            <VerticalStackLayout Spacing="14">
+
+                <Label Text="Calidad de Producto"
+                       FontSize="22"
+                       FontAttributes="Bold"
+                       TextColor="#111827" />
+
+                <Label Text="Seleccione una opción:"
+                       FontSize="13"
+                       TextColor="#6B7280" />
+
+                <!-- 🔷 Card 1: OT (equipos de medición) -->
+                <Frame Padding="14"
+                       CornerRadius="16"
+                       BorderColor="#E5E7EB"
+                       BackgroundColor="White"
+                       HasShadow="False">
+                    <VerticalStackLayout Spacing="8">
+
+                        <HorizontalStackLayout Spacing="10">
+                            <Label Text="📟"
+                                   FontSize="22"
+                                   VerticalOptions="Center" />
+
+                            <VerticalStackLayout Spacing="2" HorizontalOptions="FillAndExpand">
+                                <Label Text="OT de Medición"
+                                       FontSize="16"
+                                       FontAttributes="Bold"
+                                       TextColor="#111827" />
+                                <Label Text="Asignar equipos de medición y gestionar OT"
+                                       FontSize="12"
+                                       TextColor="#6B7280" />
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+
+                        <Button Text="Ir al módulo"
+                                Clicked="OnVerOtCalidad"
+                                BackgroundColor="#2563EB"
+                                TextColor="White"
+                                CornerRadius="12"
+                                HeightRequest="44" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- 🟩 Card 2: Actividades de levantamiento -->
+                <Frame Padding="14"
+                       CornerRadius="16"
+                       BorderColor="#E5E7EB"
+                       BackgroundColor="White"
+                       HasShadow="False">
+                    <VerticalStackLayout Spacing="8">
+
+                        <HorizontalStackLayout Spacing="10">
+                            <Label Text="🛠️"
+                                   FontSize="22"
+                                   VerticalOptions="Center" />
+
+                            <VerticalStackLayout Spacing="2" HorizontalOptions="FillAndExpand">
+                                <Label Text="Actividades Levantamiento"
+                                       FontSize="16"
+                                       FontAttributes="Bold"
+                                       TextColor="#111827" />
+                                <Label Text="Registrar acciones para levantar mala calidad"
+                                       FontSize="12"
+                                       TextColor="#6B7280" />
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+
+                        <Button Text="Ir al módulo"
+                                Clicked="OnActividadesLevantamiento"
+                                BackgroundColor="#16A34A"
+                                TextColor="White"
+                                CornerRadius="12"
+                                HeightRequest="44" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Volver -->
+                <Button Text="Volver a Inicio"
+                        Clicked="OnBack"
+                        BackgroundColor="#E5E7EB"
+                        TextColor="#111827"
+                        CornerRadius="12"
+                        HeightRequest="44" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

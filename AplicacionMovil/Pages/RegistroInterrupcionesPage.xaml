@@ -1,0 +1,467 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AplicacionMovil.Pages.RegistroInterrupcionesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title=""
+    BackgroundColor="#F3F4F6">
+
+	<!-- Estilos básicos -->
+	<ContentPage.Resources>
+		<Style TargetType="Label" x:Key="SectionTitleLabel">
+			<Setter Property="FontSize" Value="16" />
+			<Setter Property="FontAttributes" Value="Bold" />
+			<Setter Property="TextColor" Value="#111827" />
+			<Setter Property="Margin" Value="0,0,0,4" />
+		</Style>
+
+		<Style TargetType="Label" x:Key="FieldCaptionLabel">
+			<Setter Property="FontSize" Value="12" />
+			<Setter Property="TextColor" Value="#6B7280" />
+		</Style>
+
+		<Style TargetType="Entry">
+			<Setter Property="FontSize" Value="14" />
+			<Setter Property="BackgroundColor" Value="Transparent" />
+			<Setter Property="HeightRequest" Value="38" />
+		</Style>
+
+		<Style TargetType="Picker">
+			<Setter Property="FontSize" Value="14" />
+			<Setter Property="BackgroundColor" Value="Transparent" />
+			<Setter Property="HeightRequest" Value="40" />
+		</Style>
+
+		<Style TargetType="Button" x:Key="PrimaryButton">
+			<Setter Property="BackgroundColor" Value="#4F46E5" />
+			<Setter Property="TextColor" Value="White" />
+			<Setter Property="CornerRadius" Value="10" />
+			<Setter Property="HeightRequest" Value="45" />
+			<Setter Property="FontAttributes" Value="Bold" />
+		</Style>
+
+		<Style TargetType="Button" x:Key="SecondaryButton">
+			<Setter Property="BackgroundColor" Value="#0F766E" />
+			<Setter Property="TextColor" Value="White" />
+			<Setter Property="CornerRadius" Value="10" />
+			<Setter Property="HeightRequest" Value="45" />
+			<Setter Property="FontAttributes" Value="Bold" />
+		</Style>
+
+		<Style TargetType="Button" x:Key="GhostButton">
+			<Setter Property="BackgroundColor" Value="#E5E7EB" />
+			<Setter Property="TextColor" Value="#111827" />
+			<Setter Property="CornerRadius" Value="10" />
+			<Setter Property="HeightRequest" Value="42" />
+		</Style>
+
+        <Style TargetType="Frame" x:Key="EditableCardFrame">
+            <Setter Property="Padding" Value="12" />
+            <Setter Property="Margin" Value="0,4,0,0" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="HasShadow" Value="False" />
+            <!-- Verde suave de fondo -->
+            <Setter Property="BackgroundColor" Value="#DCFCE7" />
+            <!-- Borde verde -->
+            <Setter Property="BorderColor" Value="#16A34A" />
+        </Style>
+
+
+    </ContentPage.Resources>
+
+	<!-- Ocultar flecha automática del Shell -->
+	<Shell.BackButtonBehavior>
+		<BackButtonBehavior IsEnabled="False" IsVisible="False" />
+	</Shell.BackButtonBehavior>
+
+	<!-- GRID PRINCIPAL: fila 0 = barra fija / fila 1 = contenido desplazable -->
+	<Grid RowDefinitions="Auto,*">
+
+		<!-- 🔵 BARRA SUPERIOR FIJA (similar a Mis OT) -->
+		<Grid Grid.Row="0"
+              ColumnDefinitions="Auto,*"
+              Padding="16,10"
+              BackgroundColor="White">
+
+			<!-- Botón volver (MIS OT) -->
+			<Button Grid.Column="0"
+                    Text="← MIS OT"
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    BackgroundColor="#2563EB"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Padding="12,4"
+                    HorizontalOptions="Start"
+                    VerticalOptions="Center"
+                    Clicked="OnBackClicked" />
+
+			<!-- Título azul -->
+			<Label Grid.Column="1"
+                   Text="Atención de Reclamos"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   TextColor="#2563EB"
+                   HorizontalOptions="End"
+                   VerticalOptions="Center" />
+		</Grid>
+
+		<!-- CONTENIDO SCROLLABLE -->
+		<ScrollView Grid.Row="1">
+			<VerticalStackLayout Padding="16" Spacing="14">
+
+				<!-- DATOS DEL RECLAMO (SOLO LECTURA / OT) -->
+				<Frame
+                    Padding="12"
+                    Margin="0,0,0,4"
+                    BackgroundColor="#DBEAFE"
+                    BorderColor="#60A5FA"
+                    CornerRadius="12">
+					<VerticalStackLayout Spacing="6">
+
+						<Label Text="Datos de la orden de trabajo"
+                               Style="{StaticResource SectionTitleLabel}" />
+
+						<Label Text="Sucursal" Style="{StaticResource FieldCaptionLabel}" />
+						<Entry x:Name="txtSucursal"
+                               IsReadOnly="True" />
+
+						<Label Text="Descripción del reclamo" Style="{StaticResource FieldCaptionLabel}" />
+						<Entry x:Name="txtDescripcion"
+                               IsReadOnly="True" />
+
+						<Label Text="Reclamante" Style="{StaticResource FieldCaptionLabel}" />
+						<Entry x:Name="txtNombreReclamante"
+                               IsReadOnly="True" />
+
+						<Label Text="Teléfono" Style="{StaticResource FieldCaptionLabel}" />
+						<Entry x:Name="txtTelefono"
+                               IsReadOnly="True" />
+
+						<Label Text="GPS del reclamo (referencia)"
+                               Style="{StaticResource FieldCaptionLabel}" />
+						<Label x:Name="lblGpsReclamo"
+                               Text="Sin coordenadas del reclamo"
+                               FontSize="12"
+                               TextColor="#374151" />
+					</VerticalStackLayout>
+				</Frame>
+                
+                <!-- CLASIFICACION DE RECLAMO -->
+                <Frame
+                    Padding="12"
+                    Margin="0,4,0,0"
+                    BorderColor="#CBD5E1"
+                    BackgroundColor="White"
+                    CornerRadius="12"
+                    HasShadow="False">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Clasificación del reclamo"
+                               Style="{StaticResource SectionTitleLabel}" />
+
+                        <Frame Padding="0"
+                               Margin="0,4,0,0"
+                               HeightRequest="44"
+                               CornerRadius="8"
+                               BorderColor="#CBD5E1"
+                               BackgroundColor="#F9FAFB">
+                            <Picker x:Name="pkClasificacion"
+                                    SelectedIndexChanged="OnClasificacionChanged"
+                                    IsEnabled="False"
+                                    HorizontalOptions="Fill"
+                                    VerticalOptions="Center">
+                                <Picker.Items>
+                                    <x:String>Interrupcion suministro electrico</x:String>
+                                    <x:String>Deficiencia en alumbrado publico</x:String>
+                                    <x:String>Riesgo electrico</x:String>
+                                </Picker.Items>
+                            </Picker>
+                        </Frame>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <HorizontalStackLayout Margin="0,10,0,0">
+                    <CheckBox x:Name="chkDesestimado"
+                              CheckedChanged="OnDesestimadoChanged" />
+                    <Label Text="Reclamo desestimado"
+					   TextColor="Red"
+					   FontAttributes="Bold"
+					   VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                
+                <!-- FECHA Y HORA DE ATENCION (EDITABLE – VERDE) -->
+                <Frame Style="{StaticResource EditableCardFrame}">
+                    <Grid ColumnDefinitions="*,*"
+                        ColumnSpacing="12">
+
+                        <VerticalStackLayout Grid.Column="0" Spacing="4">
+                            <Label Text="Fecha de atención"
+                            Style="{StaticResource FieldCaptionLabel}" />
+                            <DatePicker x:Name="dpFecha"
+                            Format="d" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="Hora de atención"
+                            Style="{StaticResource FieldCaptionLabel}" />
+                            <TimePicker x:Name="tpHora"
+                        Format="t" />
+                        </VerticalStackLayout>
+
+                    </Grid>
+                </Frame>
+
+
+                
+
+				<!-- PANEL INTERRUPCION -->
+                <Frame
+                                        
+                    x:Name="panelInterrupcion"
+                    IsVisible="False"
+					Style="{StaticResource EditableCardFrame}">
+                    <VerticalStackLayout Spacing="8">
+
+						<Label Text="Detalles de interrupción"
+                               Style="{StaticResource SectionTitleLabel}" />
+
+						<VerticalStackLayout Spacing="4">
+							<Label Text="Naturaleza de la interrupción"
+                                   Style="{StaticResource FieldCaptionLabel}" />
+							<Frame Padding="0"
+                                   HeightRequest="44"
+                                   CornerRadius="8"
+                                   BorderColor="#CBD5E1"
+                                   BackgroundColor="#F9FAFB">
+								<Picker x:Name="pkNaturaleza"
+                                        Title="Seleccione una opción">
+									<Picker.Items>
+										<x:String>Programada</x:String>
+										<x:String>Falla</x:String>
+									</Picker.Items>
+								</Picker>
+							</Frame>
+						</VerticalStackLayout>
+
+						<VerticalStackLayout Spacing="4">
+							<Label Text="Equipo de reposición"
+                                   Style="{StaticResource FieldCaptionLabel}" />
+							<Frame Padding="0"
+                                   HeightRequest="44"
+                                   CornerRadius="8"
+                                   BorderColor="#CBD5E1"
+                                   BackgroundColor="#F9FAFB">
+								<Picker x:Name="pkEquipo"
+                                        Title="Seleccione el equipo">
+									<Picker.Items>
+										<x:String>Acometida</x:String>
+										<x:String>Cut-Out</x:String>
+										<x:String>Bajo Carga</x:String>
+										<x:String>Recloser</x:String>
+										<x:String>Interruptor</x:String>
+										<x:String>Otros</x:String>
+									</Picker.Items>
+								</Picker>
+							</Frame>
+						</VerticalStackLayout>
+
+						<VerticalStackLayout Spacing="4">
+							<Label Text="Fases de reposición"
+                                   Style="{StaticResource FieldCaptionLabel}" />
+							<Frame Padding="0"
+                                   HeightRequest="44"
+                                   CornerRadius="8"
+                                   BorderColor="#CBD5E1"
+                                   BackgroundColor="#F9FAFB">
+								<Picker x:Name="pkFases"
+                                        Title="Seleccione la fase">
+									<Picker.Items>
+										<x:String>R</x:String>
+										<x:String>S</x:String>
+										<x:String>T</x:String>
+										<x:String>RS</x:String>
+										<x:String>RT</x:String>
+										<x:String>ST</x:String>
+										<x:String>RST</x:String>
+									</Picker.Items>
+								</Picker>
+							</Frame>
+						</VerticalStackLayout>
+
+					</VerticalStackLayout>
+				</Frame>
+
+				<!-- PANEL ALUMBRADO -->
+				<Frame
+                    x:Name="panelAlumbrado"
+                    IsVisible="False"
+					Style="{StaticResource EditableCardFrame}">
+					<VerticalStackLayout Spacing="6">
+						<Label Text="Actividad de alumbrado público"
+                               Style="{StaticResource SectionTitleLabel}" />
+
+						<Frame Padding="0"
+                               HeightRequest="44"
+                               CornerRadius="8"
+                               BorderColor="#CBD5E1"
+                               BackgroundColor="#F9FAFB">
+							<Picker x:Name="pkAlumbrado"
+                                    HeightRequest="40"
+                                    VerticalOptions="Center">
+								<Picker.Items>
+									<x:String>Cambio de luminaria</x:String>
+									<x:String>Cambio de lampara</x:String>
+									<x:String>Conductor AP</x:String>
+									<x:String>Cambio de accesorios</x:String>
+									<x:String>Otros</x:String>
+								</Picker.Items>
+							</Picker>
+						</Frame>
+					</VerticalStackLayout>
+				</Frame>
+
+				<!-- PANEL RIESGO -->
+				<Frame
+                    x:Name="panelRiesgo"
+                    IsVisible="False"
+					Style="{StaticResource EditableCardFrame}">
+					<VerticalStackLayout Spacing="6">
+						<Label Text="Verificación de riesgo eléctrico"
+                               Style="{StaticResource SectionTitleLabel}" />
+
+						<Frame Padding="0"
+                               HeightRequest="44"
+                               CornerRadius="8"
+                               BorderColor="#CBD5E1"
+                               BackgroundColor="#F9FAFB">
+							<Picker x:Name="pkRiesgo"
+                                    HeightRequest="40"
+                                    VerticalOptions="Center">
+								<Picker.Items>
+									<x:String>Red Primaria</x:String>
+									<x:String>Red Secundaria</x:String>
+									<x:String>Acometida</x:String>
+									<x:String>Otros</x:String>
+								</Picker.Items>
+							</Picker>
+						</Frame>
+					</VerticalStackLayout>
+				</Frame>
+
+
+
+                <!-- DESCRIPCION SOLUCION (EDITABLE – VERDE) -->
+                <Frame
+					Style="{StaticResource EditableCardFrame}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Descripción de la solución"
+					   Style="{StaticResource SectionTitleLabel}" />
+								<Frame Padding="6"
+								   BorderColor="#A7F3D0"
+								   BackgroundColor="#ECFDF5"
+								   CornerRadius="8">
+                            <Editor x:Name="txtDescripcionSol"
+								Placeholder="Describa la solución..."
+								AutoSize="TextChanges"
+								HeightRequest="80" />
+                        </Frame>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- FOTO -->
+				<Frame
+                    Padding="12"
+                    Margin="0,4,0,0"
+                    BorderColor="#CBD5E1"
+                    BackgroundColor="White"
+                    CornerRadius="12"
+                    HasShadow="False">
+					<VerticalStackLayout Spacing="8">
+						<Label Text="Foto de campo (max. 4 MB)"
+                               Style="{StaticResource SectionTitleLabel}" />
+
+						<Button x:Name="btnTomarFoto"
+                                Text="Tomar foto"
+                                Style="{StaticResource PrimaryButton}"
+                                HeightRequest="42"
+                                Clicked="OnTomarFotoClicked" />
+
+						<Image x:Name="imgFoto"
+                               WidthRequest="220"
+                               HeightRequest="220"
+                               Aspect="AspectFill"
+                               BackgroundColor="#E5E7EB"
+                               Margin="0,4,0,0" />
+
+						<Label x:Name="lblFotoSize"
+                               Text="Sin foto"
+                               TextColor="#6B7280"
+                               FontAttributes="Italic"
+                               Margin="0,2,0,0" />
+					</VerticalStackLayout>
+				</Frame>
+
+				<!-- GPS ACTUAL -->
+				<Frame
+                    Padding="12"
+                    Margin="0,4,0,0"
+                    BorderColor="#CBD5E1"
+                    BackgroundColor="White"
+                    CornerRadius="12"
+                    HasShadow="False">
+					<VerticalStackLayout Spacing="6">
+						<Label Text="Ubicación GPS actual"
+                               Style="{StaticResource SectionTitleLabel}" />
+
+						<HorizontalStackLayout Spacing="10">
+							<Label x:Name="lblPrecision"
+                                   Text="Precisión: --"
+                                   TextColor="#6B7280"
+                                   FontAttributes="Italic" />
+							<Label Text="Objetivo: hasta 30 m"
+                                   TextColor="#6B7280" />
+						</HorizontalStackLayout>
+
+						<Button x:Name="btnGps"
+                                Text="Obtener ubicación"
+                                Style="{StaticResource PrimaryButton}"
+                                Clicked="OnObtenerGpsClicked" />
+
+						<Label x:Name="lblCoords"
+                               Text="Lat/Lon aun no guardadas"
+                               TextColor="#6B7280"
+                               FontAttributes="Italic" />
+					</VerticalStackLayout>
+				</Frame>
+
+				<!-- BOTONES ENVIAR / GUARDAR -->
+				<Grid ColumnDefinitions="*,*"
+                      ColumnSpacing="10"
+                      Margin="0,16,0,0">
+
+					<Button Grid.Column="0"
+                            x:Name="btnEnviar"
+                            Text="Enviar"
+                            Style="{StaticResource PrimaryButton}"
+                            Clicked="OnEnviarClicked" />
+
+					<Button Grid.Column="1"
+                            x:Name="btnGuardar"
+                            Text="Guardar offline"
+                            Style="{StaticResource SecondaryButton}"
+                            Clicked="OnGuardarClicked" />
+				</Grid>
+
+				<!-- BOTÓN HISTORIAL LOCAL -->
+				<Button Text="Historial local"
+                        Margin="0,10,0,0"
+                        Style="{StaticResource PrimaryButton}"
+                        Clicked="OnHistorialClicked" />
+
+				<Entry x:Name="txtCodigoReclamo" Placeholder="Código de Reclamo" />
+
+			</VerticalStackLayout>
+		</ScrollView>
+
+	</Grid>
+</ContentPage>

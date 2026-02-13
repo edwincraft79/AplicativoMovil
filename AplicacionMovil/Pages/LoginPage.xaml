@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    x:Class="AplicacionMovil.Pages.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Iniciar sesión"
+    BackgroundColor="#F3F4F6">
+
+    <ContentPage.Resources>
+        <Style TargetType="Label" x:Key="TitleLabel">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="#111827" />
+        </Style>
+
+        <Style TargetType="Label" x:Key="CaptionLabel">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="TextColor" Value="#6B7280" />
+        </Style>
+
+        <Style TargetType="Picker">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="HeightRequest" Value="40" />
+        </Style>
+
+        <Style TargetType="Button" x:Key="PrimaryButton">
+            <Setter Property="BackgroundColor" Value="#2563EB" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="HeightRequest" Value="46" />
+            <Setter Property="FontAttributes" Value="Bold" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid Padding="24">
+        <ScrollView>
+            <VerticalStackLayout
+                Spacing="18"
+                VerticalOptions="CenterAndExpand">
+
+                <!-- Título / encabezado -->
+                <Label Text="Ingreso operador"
+                       Style="{StaticResource TitleLabel}"
+                       HorizontalOptions="Center" />
+
+                <Label Text="Registro de Operador Móvil"
+                       FontSize="14"
+                       TextColor="#6B7280"
+                       HorizontalOptions="Center" />
+
+                <!-- Tarjeta de login -->
+                <Frame
+                    Margin="0,16,0,0"
+                    Padding="18"
+                    BackgroundColor="White"
+                    BorderColor="#E5E7EB"
+                    CornerRadius="16"
+                    HasShadow="False">
+
+                    <VerticalStackLayout Spacing="14">
+
+                        <!-- Operador -->
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Usuario (Cliente)"
+                                   Style="{StaticResource CaptionLabel}" />
+                            <Frame Padding="10"
+       CornerRadius="10"
+       BorderColor="#CBD5E1"
+       BackgroundColor="#F9FAFB">
+
+                                <Grid RowDefinitions="Auto,Auto">
+                                    <!-- Entry (usuario) -->
+                                    <Entry x:Name="txtOperador"
+               Placeholder="Escriba usuario (ej: ecoarite)"
+               BackgroundColor="Transparent"
+               TextChanged="OnOperadorTextChanged"
+               Completed="OnOperadorCompleted" />
+
+                                    <!-- Lista de sugerencias (dropdown) -->
+                                    <Border x:Name="panelOperadores"
+                Grid.Row="1"
+                Stroke="#CBD5E1"
+                StrokeThickness="1"
+                BackgroundColor="White"
+                IsVisible="False"
+                Margin="0,8,0,0">
+                                        <CollectionView x:Name="cvOperadores"
+                            SelectionMode="Single"
+                            SelectionChanged="OnOperadorSelected"
+                            HeightRequest="200">
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Padding="10">
+                                                        <!-- Cambia Usuario por tu propiedad real -->
+                                                        <Label Text="{Binding Usuario}"
+       FontSize="14"
+       TextColor="#111827" />
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
+                                        </CollectionView>
+                                    </Border>
+                                </Grid>
+                            </Frame>
+
+                        </VerticalStackLayout>
+
+                        <!-- Móvil -->
+                        <VerticalStackLayout Spacing="4" Margin="0,8,0,0">
+                            <Label Text="Equipo móvil"
+                                   Style="{StaticResource CaptionLabel}" />
+                            <Frame Padding="6"
+                                   CornerRadius="10"
+                                   BorderColor="#CBD5E1"
+                                   BackgroundColor="#F9FAFB">
+                                <Picker x:Name="pkMovil"
+                                        Title="Seleccione móvil" />
+                            </Frame>
+                        </VerticalStackLayout>
+
+                        <!-- Contraseña -->
+                        <VerticalStackLayout Spacing="4" Margin="0,8,0,0">
+                            <Label Text="Contraseña"
+                               Style="{StaticResource CaptionLabel}" />
+
+                                                <Frame Padding="6"
+                               CornerRadius="10"
+                               BorderColor="#CBD5E1"
+                               BackgroundColor="#F9FAFB">
+
+                                                    <Grid ColumnDefinitions="*,Auto"
+                                  VerticalOptions="Center">
+
+                                    <!-- Entry contraseña -->
+                                    <Entry x:Name="txtPassword"
+                               Grid.Column="0"
+                               Placeholder="Ingrese contraseña"
+                               IsPassword="True"
+                               BackgroundColor="Transparent" />
+
+                                    <!-- Ojo -->
+                                    <Button x:Name="btnTogglePassword"
+                                        Grid.Column="1"
+                                        Text="👁️"
+                                        BackgroundColor="Transparent"
+                                        FontSize="18"
+                                        WidthRequest="36"
+                                        HeightRequest="36"
+                                        Clicked="OnTogglePasswordClicked"/>
+                                </Grid>
+
+                            </Frame>
+                        </VerticalStackLayout>
+
+                        <!-- Botón ingresar -->
+                        <Button Text="Ingresar"
+                                Margin="0,14,0,0"
+                                Style="{StaticResource PrimaryButton}"
+                                Clicked="OnLoginClicked" />
+
+                    </VerticalStackLayout>
+                </Frame>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>
