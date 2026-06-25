@@ -1,7 +1,7 @@
-﻿using AplicacionMovil.Data;
-using Microsoft.Maui.Controls;
+﻿using Microsoft.Maui.Controls;
 using System;
 using AplicacionMovil.Services;
+using AplicacionMovil.Core.Models;
 
 namespace AplicacionMovil.Pages
 {

@@ -1,9 +1,8 @@
-﻿using AplicacionMovil.Data;
-using AplicacionMovil.Models;
-using AplicacionMovil.Services;
+﻿using AplicacionMovil.Services;
 using System.Net.Http.Json;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using AplicacionMovil.Core.Models;
 
 namespace AplicacionMovil.Pages;
 
@@ -45,6 +44,7 @@ public partial class LoginPage : ContentPage
 
             if (!resp.IsSuccessStatusCode)
             {
+
                 await DisplayAlert("Operadores (ERROR)", await DumpResponseAsync(resp), "OK");
                 _operadores = new();
                 return;
@@ -61,7 +61,7 @@ public partial class LoginPage : ContentPage
                 new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true })
                 ?? new();
 
-            
+
         }
         catch (Exception ex)
         {
@@ -186,11 +186,11 @@ public partial class LoginPage : ContentPage
             return;
         }
 
-        var req = new
+        var req = new MovilAuthService.LoginRequest
         {
-            userName = _operadorSel.Usuario,
-            password = pass,
-            codigoMovil = movil
+            UserName = _operadorSel.Usuario ?? "",
+            Password = pass,
+            CodigoMovil = movil
         };
 
         try
@@ -218,6 +218,23 @@ public partial class LoginPage : ContentPage
                 codigoMovil: login.CodigoMovil ?? movil,
                 token: login.Token
             );
+
+            // ✅ ============================================================
+            // ✅ GUARDAR DATOS DEL USUARIO EN PREFERENCES
+            // ✅ ============================================================
+
+            // Guardar para uso en historial de deficiencias/reclamos
+            Preferences.Set("UserName", login.UserName);
+            Preferences.Set("CodigoMovil", login.CodigoMovil ?? movil);
+            Preferences.Set("Zona", login.Zona ?? "");
+
+            // Si LoginResponseDto tiene IdUsuario numérico, úsalo:
+            // Preferences.Set("UserId", login.IdUsuario);
+
+            // Si NO tienes IdUsuario, usar UserName como identificador:
+            Preferences.Set("CurrentUser", login.UserName);
+
+            // ✅ ============================================================
 
             await ApiClient.ApplyBearerAsync();
             await Shell.Current.GoToAsync("//HomePage");
@@ -257,4 +274,5 @@ public partial class LoginPage : ContentPage
         txtPassword.IsPassword = !_passwordVisible;
         btnTogglePassword.Text = _passwordVisible ? "🙈" : "👁️";
     }
+
 }

@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AplicacionMovil.Modules.Mantenimiento.Pages.MisOtMantenimientoPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title=""
+    BackgroundColor="#F5F3FF">
+
+    <ContentPage.Resources>
+        <Style TargetType="Button" x:Key="HeaderButton">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="FontAttributes" Value="Bold" />
+        </Style>
+
+        <Style TargetType="Button" x:Key="ActionButton">
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="HeightRequest" Value="36" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="13" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- ══ BARRA SUPERIOR ══════════════════════════════════════════ -->
+        <Frame Grid.Row="0"
+               Padding="0"
+               CornerRadius="20"
+               BorderColor="Transparent"
+               HasShadow="True"
+               BackgroundColor="White">
+
+            <Grid RowDefinitions="Auto,Auto,Auto"
+                  Padding="16,12,16,14">
+
+                <BoxView Grid.Row="0"
+                         BackgroundColor="#7C3AED"
+                         HeightRequest="3"
+                         CornerRadius="2"
+                         Margin="0,0,0,10" />
+
+                <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="0,0,0,10">
+                    <VerticalStackLayout Grid.Column="0" Spacing="2">
+                        <Label Text="🔧 Mantenimiento"
+                               FontSize="17"
+                               FontAttributes="Bold"
+                               TextColor="#0F172A"
+                               VerticalOptions="Center" />
+                        <Label Text="OTs asignadas desde web"
+                               FontSize="11"
+                               TextColor="#64748B" />
+                    </VerticalStackLayout>
+
+                    <Frame Grid.Column="1"
+                           Padding="10,5"
+                           CornerRadius="10"
+                           BorderColor="Transparent"
+                           BackgroundColor="#EDE9FE"
+                           HasShadow="False"
+                           VerticalOptions="Center">
+                        <Label x:Name="lblContadorOts"
+                               Text="0 OTs"
+                               FontSize="13"
+                               FontAttributes="Bold"
+                               TextColor="#4C1D95" />
+                    </Frame>
+                </Grid>
+
+                <Grid Grid.Row="2" ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                    <Button Grid.Column="0"
+                            Text="← Inicio"
+                            Style="{StaticResource HeaderButton}"
+                            BackgroundColor="#7C3AED"
+                            HeightRequest="36"
+                            Clicked="OnVolverInicioClicked" />
+                    <Button Grid.Column="1"
+                            Text="🔄 Actualizar"
+                            Style="{StaticResource HeaderButton}"
+                            BackgroundColor="#0EA5E9"
+                            HeightRequest="36"
+                            Clicked="OnRefreshClicked" />
+                    <Button Grid.Column="2"
+                            Text="🚪 Salir"
+                            Style="{StaticResource HeaderButton}"
+                            BackgroundColor="#DC2626"
+                            HeightRequest="36"
+                            Clicked="OnLogoutClicked" />
+                </Grid>
+            </Grid>
+        </Frame>
+
+        <!-- ══ CONTENIDO ════════════════════════════════════════════════ -->
+        <Grid Grid.Row="1" RowDefinitions="Auto,*" Padding="16,12,16,16">
+
+            <!-- Filtros -->
+            <Frame Grid.Row="0"
+                   Padding="8,6"
+                   CornerRadius="12"
+                   BorderColor="#DDD6FE"
+                   BackgroundColor="White"
+                   HasShadow="False"
+                   Margin="0,0,0,12">
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="6">
+                    <Button Grid.Column="0"
+                            x:Name="btnFiltroTodos"
+                            Text="🔢 Todos"
+                            FontSize="12" FontAttributes="Bold"
+                            TextColor="White"
+                            BackgroundColor="#7C3AED"
+                            CornerRadius="8" HeightRequest="32"
+                            Clicked="OnFiltroTodos" />
+                    <Button Grid.Column="1"
+                            x:Name="btnFiltroPrev"
+                            Text="🔧 Prev."
+                            FontSize="12" FontAttributes="Bold"
+                            TextColor="#4C1D95"
+                            BackgroundColor="#EDE9FE"
+                            CornerRadius="8" HeightRequest="32"
+                            Clicked="OnFiltroPreventivo" />
+                    <Button Grid.Column="2"
+                            x:Name="btnFiltroCorr"
+                            Text="⚠️ Corr."
+                            FontSize="12" FontAttributes="Bold"
+                            TextColor="#991B1B"
+                            BackgroundColor="#FEE2E2"
+                            CornerRadius="8" HeightRequest="32"
+                            Clicked="OnFiltroCorrectivo" />
+                </Grid>
+            </Frame>
+
+            <!-- Lista -->
+            <RefreshView Grid.Row="1"
+                         x:Name="refreshView"
+                         RefreshColor="#7C3AED"
+                         Refreshing="OnRefreshOts">
+                <ScrollView>
+                    <VerticalStackLayout Spacing="12">
+
+                        <!-- Vacío -->
+                        <Frame x:Name="frameVacio"
+                               IsVisible="False"
+                               Padding="24" CornerRadius="16"
+                               BorderColor="#DDD6FE" BackgroundColor="White" HasShadow="False">
+                            <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                                <Label Text="🔧" FontSize="36" HorizontalOptions="Center" />
+                                <Label Text="Sin OTs asignadas"
+                                       FontSize="15" FontAttributes="Bold"
+                                       TextColor="#4C1D95" HorizontalOptions="Center" />
+                                <Label Text="Cuando el coordinador asigne trabajos de mantenimiento aparecerán aquí."
+                                       FontSize="12" TextColor="#64748B"
+                                       HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <!-- Tarjetas -->
+                        <VerticalStackLayout x:Name="cvOrdenes"
+                                             Spacing="12"
+                                             BindableLayout.ItemsSource="{Binding OtsFiltradas}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame Padding="0" CornerRadius="16"
+                                           HasShadow="True" BorderColor="Transparent" BackgroundColor="White">
+
+                                        <Grid RowDefinitions="Auto,Auto,Auto">
+
+                                            <!-- Barra de color según tipo -->
+                                            <BoxView Grid.Row="0"
+                                                     BackgroundColor="{Binding ColorTipo}"
+                                                     HeightRequest="4"
+                                                     CornerRadius="16,16,0,0" />
+
+                                            <!-- Datos -->
+                                            <VerticalStackLayout Grid.Row="1" Padding="16,14" Spacing="8">
+
+                                                <!-- Cabecera -->
+                                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                                    <Label Grid.Column="0"
+                                                           Text="{Binding IconoTipo}"
+                                                           FontSize="22"
+                                                           VerticalOptions="Center"
+                                                           Margin="0,0,8,0" />
+
+                                                    <VerticalStackLayout Grid.Column="1" Spacing="1">
+                                                        <Label Text="{Binding CodigoOT}"
+                                                               FontAttributes="Bold"
+                                                               FontSize="15"
+                                                               TextColor="#0F172A" />
+                                                        <Label Text="{Binding TipoMantenimiento}"
+                                                               FontSize="11"
+                                                               TextColor="#64748B" />
+                                                    </VerticalStackLayout>
+
+                                                    <Frame Grid.Column="2"
+                                                           Padding="8,4" CornerRadius="8"
+                                                           BorderColor="Transparent"
+                                                           BackgroundColor="#EDE9FE" HasShadow="False"
+                                                           VerticalOptions="Center">
+                                                        <Label Text="{Binding EstadoOt}"
+                                                               FontSize="10" FontAttributes="Bold"
+                                                               TextColor="#4C1D95" />
+                                                    </Frame>
+                                                </Grid>
+
+                                                <!-- Nombre del trabajo -->
+                                                <Label Text="{Binding Nombre}"
+                                                       FontSize="13"
+                                                       FontAttributes="Bold"
+                                                       TextColor="#1E293B"
+                                                       LineBreakMode="WordWrap" />
+
+                                                <!-- Datos en grid -->
+                                                <Grid ColumnDefinitions="Auto,*"
+                                                      RowDefinitions="Auto,Auto,Auto,Auto"
+                                                      ColumnSpacing="10" RowSpacing="4"
+                                                      Margin="0,2,0,0">
+
+                                                    <Label Grid.Row="0" Grid.Column="0"
+                                                           Text="Red:" FontSize="12" FontAttributes="Bold" TextColor="#64748B" />
+                                                    <Label Grid.Row="0" Grid.Column="1"
+                                                           Text="{Binding TipoRedTexto}" FontSize="12" TextColor="#0F172A" />
+
+                                                    <Label Grid.Row="1" Grid.Column="0"
+                                                           Text="Zona:" FontSize="12" FontAttributes="Bold" TextColor="#64748B" />
+                                                    <Label Grid.Row="1" Grid.Column="1"
+                                                           Text="{Binding Zona}" FontSize="12" TextColor="#0F172A" />
+
+                                                    <Label Grid.Row="2" Grid.Column="0"
+                                                           Text="Ubicación:" FontSize="12" FontAttributes="Bold" TextColor="#64748B" />
+                                                    <Label Grid.Row="2" Grid.Column="1"
+                                                           Text="{Binding ReferenciaUbicacion}" FontSize="12" TextColor="#0F172A"
+                                                           LineBreakMode="TailTruncation" />
+
+                                                    <Label Grid.Row="3" Grid.Column="0"
+                                                           Text="Inicio:" FontSize="12" FontAttributes="Bold" TextColor="#64748B" />
+                                                    <Label Grid.Row="3" Grid.Column="1"
+                                                           Text="{Binding FechaInicioTexto}" FontSize="12" TextColor="#64748B" />
+                                                </Grid>
+
+                                                <!-- Definición del problema -->
+                                                <Label Text="{Binding DefinicionProblema}"
+                                                       FontSize="11"
+                                                       TextColor="#475569"
+                                                       LineBreakMode="WordWrap"
+                                                       Margin="0,4,0,0" />
+
+                                            </VerticalStackLayout>
+
+                                            <!-- Botones -->
+                                            <Grid Grid.Row="2"
+                                                  ColumnDefinitions="*,*,*"
+                                                  ColumnSpacing="6"
+                                                  Padding="16,0,16,16">
+
+                                                <Frame Grid.Column="0"
+                                                       Padding="0" CornerRadius="10"
+                                                       BorderColor="Transparent"
+                                                       BackgroundColor="#8B5CF6" HasShadow="False">
+                                                    <Button Text="🗺️ Ruta"
+                                                            Style="{StaticResource ActionButton}"
+                                                            BackgroundColor="Transparent"
+                                                            Clicked="OnRutaClicked" />
+                                                </Frame>
+
+                                                <Frame Grid.Column="1"
+                                                       Padding="0" CornerRadius="10"
+                                                       BorderColor="Transparent"
+                                                       BackgroundColor="#0EA5E9" HasShadow="False">
+                                                    <Button Text="🗺 Campo"
+                                                            Style="{StaticResource ActionButton}"
+                                                            BackgroundColor="Transparent"
+                                                            Clicked="OnMapaCampoClicked" />
+                                                </Frame>
+
+                                                <Frame Grid.Column="2"
+                                                       Padding="0" CornerRadius="10"
+                                                       BorderColor="Transparent"
+                                                       BackgroundColor="#7C3AED" HasShadow="False">
+                                                    <Button Text="▶ Ejecutar"
+                                                            Style="{StaticResource ActionButton}"
+                                                            BackgroundColor="Transparent"
+                                                            Clicked="OnEjecutarClicked" />
+                                                </Frame>
+                                            </Grid>
+
+                                        </Grid>
+                                    </Frame>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </ScrollView>
+            </RefreshView>
+
+        </Grid>
+    </Grid>
+</ContentPage>

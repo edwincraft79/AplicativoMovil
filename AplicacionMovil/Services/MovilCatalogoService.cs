@@ -1,5 +1,5 @@
 ﻿using System.Net.Http.Json;
-using AplicacionMovil.Models;
+using AplicacionMovil.Core.Models;
 
 namespace AplicacionMovil.Services
 {

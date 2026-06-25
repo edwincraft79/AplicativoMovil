@@ -1,4 +1,8 @@
-﻿using AplicacionMovil.Data;
+﻿using AplicacionMovil.Core.Models;
+using AplicacionMovil.Modules.Reclamos.Pages;
+using AplicacionMovil.Modules.Deficiencias.Pages;
+using AplicacionMovil.Modules.Calidad.Pages;
+using AplicacionMovil.Modules.Mantenimiento.Pages;
 
 namespace AplicacionMovil.Pages;
 
@@ -14,25 +18,29 @@ public partial class HomePage : ContentPage
     {
         base.OnAppearing();
 
-        // Asegura sesión cargada (por si reabre app)
         await SesionMovil.RestaurarAsync();
 
         lblOperador.Text = $"Operador: {SesionMovil.Usuario ?? "-"}";
-        lblZonal.Text = $"Zonal: {SesionMovil.Zona ?? "-"}";
     }
 
     private async void OnGoReclamosClicked(object sender, EventArgs e)
-        => await Shell.Current.GoToAsync("//MisOtPage");
+        => await Shell.Current.GoToAsync($"//{nameof(MisOtPage)}");
 
     private async void OnGoDeficienciasClicked(object sender, EventArgs e)
-        => await Shell.Current.GoToAsync("//DeficienciasHomePage");
+        => await Shell.Current.GoToAsync(nameof(MisDeficienciasPage));
 
     private async void OnGoCalidadClicked(object sender, EventArgs e)
-        => await Shell.Current.GoToAsync("//CalidadProductoHomePage");
+        => await Shell.Current.GoToAsync(nameof(MisOtCalidadPage));
+
+    private async void OnGoInspeccionClicked(object sender, EventArgs e)
+        => await Shell.Current.GoToAsync(nameof(RegistroInspeccionDefPage));
+
+    private async void OnGoMantenimientoClicked(object sender, EventArgs e)
+        => await Shell.Current.GoToAsync(nameof(MisOtMantenimientoPage));
 
     private async void OnLogoutClicked(object sender, EventArgs e)
     {
-        await SesionMovil.CerrarSesionAsync(); // si no existe, te lo creo luego
+        await SesionMovil.CerrarSesionAsync();
         await Shell.Current.GoToAsync("//LoginPage");
     }
 }

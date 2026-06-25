@@ -56,25 +56,33 @@
 		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
 		<PackageReference Include="SkiaSharp" Version="3.119.1" />
+		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.11" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Pages\MisOtPage.xaml.cs">
+	  <Compile Update="Modules\Reclamos\Pages\MisOtPage.xaml.cs">
 	    <DependentUpon>MisOtPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-		<MauiXaml Update="Pages\CalidadProductoHomePage.xaml">
+		<MauiXaml Update="Modules\Calidad\Pages\EjecutarCalidadPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Pages\DeficienciasHomePage.xaml">
+		<MauiXaml Update="Modules\Calidad\Pages\MisOtCalidadPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Pages\DeficienciasMapPage.xaml">
+		<MauiXaml Update="Modules\Deficiencias\Pages\DeficienciasHomePage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Pages\HistorialPage.xaml">
+		<MauiXaml Update="Modules\Deficiencias\Pages\DeficienciasMapPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Modules\Deficiencias\Pages\HistorialDeficienciasPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Modules\Reclamos\Pages\HistorialPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
 		<MauiXaml Update="Pages\HomePage.xaml">
@@ -83,15 +91,33 @@
 		<MauiXaml Update="Pages\LoginPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Pages\MisDeficienciasPage.xaml">
+		<MauiXaml Update="Modules\Deficiencias\Pages\MisDeficienciasPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Pages\OtMapPage.xaml">
+		<MauiXaml Update="Modules\Reclamos\Pages\OtMapPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
-		<MauiXaml Update="Pages\RegistroInterrupcionesPage.xaml">
+		<MauiXaml Update="Modules\Deficiencias\Pages\RegistroDeficienciasPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Modules\Deficiencias\Pages\RegistroInspeccionDefPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</MauiXaml>
+		<MauiXaml Update="Modules\Reclamos\Pages\RegistroInterrupcionesPage.xaml">
 			<Generator>MSBuild:Compile</Generator>
 		</MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Core\Helpers\" />
+	  <Folder Include="Core\Constants\" />
+	  <Folder Include="Core\Services\" />
+	  <Folder Include="Modules\Calidad\Services\" />
+	  <Folder Include="Modules\Calidad\ViewModels\" />
+	  <Folder Include="Modules\Deficiencias\Services\" />
+	  <Folder Include="Modules\Deficiencias\ViewModels\" />
+	  <Folder Include="Modules\Reclamos\Services\" />
+	  <Folder Include="Modules\Reclamos\ViewModels\" />
 	</ItemGroup>
 
 </Project>

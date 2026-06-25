@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AplicacionMovil.Modules.Reclamos.Pages.MisOtPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title=""
+    BackgroundColor="#EEF2FF">
+
+    <ContentPage.Resources>
+
+        <!-- ── Botones del header ── -->
+        <Style TargetType="Button" x:Key="HeaderButton">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="Padding" Value="6,4" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="HeightRequest" Value="34" />
+        </Style>
+
+        <!-- ── Etiqueta de campo (gris) ── -->
+        <Style TargetType="Label" x:Key="LblKey">
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="#6B7280" />
+            <Setter Property="TextTransform" Value="Uppercase" />
+            <Setter Property="CharacterSpacing" Value="0.5" />
+        </Style>
+
+        <!-- ── Valor del campo (oscuro) ── -->
+        <Style TargetType="Label" x:Key="LblVal">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="TextColor" Value="#111827" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="LineBreakMode" Value="WordWrap" />
+        </Style>
+
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- ══════════════════════════════════════
+             HEADER
+        ══════════════════════════════════════ -->
+        <Frame Grid.Row="0"
+               Padding="0"
+               CornerRadius="20"
+               BorderColor="Transparent"
+               HasShadow="True"
+               BackgroundColor="#1E3A8A">
+
+            <Grid RowDefinitions="Auto,Auto" Padding="16,14,16,16" RowSpacing="12">
+
+                <!-- Título + Contador -->
+                <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                    <VerticalStackLayout Grid.Column="0" Spacing="2">
+                        <Label Text="MIS ÓRDENES DE TRABAJO"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="#93C5FD"
+                               CharacterSpacing="1" />
+                        <Label Text="Listado de OTs asignadas"
+                               FontSize="11"
+                               TextColor="#BFDBFE" />
+                    </VerticalStackLayout>
+
+                    <Frame Grid.Column="1"
+                           Padding="12,6"
+                           CornerRadius="20"
+                           BorderColor="Transparent"
+                           BackgroundColor="#1D4ED8"
+                           HasShadow="False"
+                           VerticalOptions="Center">
+                        <Label x:Name="lblContadorOts"
+                               Text="— OTs"
+                               FontSize="13"
+                               FontAttributes="Bold"
+                               TextColor="White" />
+                    </Frame>
+                </Grid>
+
+                <!-- Botones de navegación -->
+                <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*" ColumnSpacing="8">
+                    <Button Grid.Column="0"
+                            Text="🏠 Inicio"
+                            Style="{StaticResource HeaderButton}"
+                            BackgroundColor="#059669"
+                            Clicked="OnVolverInicioClicked" />
+                    <Button Grid.Column="1"
+                            Text="🗺️ Mapa"
+                            Style="{StaticResource HeaderButton}"
+                            BackgroundColor="#7C3AED"
+                            Clicked="OnVerMapa" />
+                    <Button Grid.Column="2"
+                            Text="📋 Historial"
+                            Style="{StaticResource HeaderButton}"
+                            BackgroundColor="#0284C7"
+                            Clicked="OnHistorialClicked" />
+                    <Button Grid.Column="3"
+                            Text="🚪 Salir"
+                            Style="{StaticResource HeaderButton}"
+                            BackgroundColor="#DC2626"
+                            Clicked="OnLogoutClicked" />
+                </Grid>
+            </Grid>
+        </Frame>
+
+        <!-- ══════════════════════════════════════
+             LISTA DE OTs
+        ══════════════════════════════════════ -->
+        <RefreshView Grid.Row="1"
+                     x:Name="refreshView"
+                     RefreshColor="#3B82F6"
+                     Refreshing="OnRefreshOts">
+
+            <ScrollView Padding="14,16,14,20">
+                <VerticalStackLayout Spacing="16"
+                                     BindableLayout.ItemsSource="{Binding Ots}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+
+                            <!-- ╔══════════════════════════════╗
+                                 ║   TARJETA DE OT              ║
+                                 ╚══════════════════════════════╝ -->
+                            <Frame Padding="0"
+                                   CornerRadius="16"
+                                   HasShadow="True"
+                                   BorderColor="Transparent"
+                                   BackgroundColor="White">
+
+                                <VerticalStackLayout Spacing="0">
+
+                                    <!-- ── CABECERA: Código OT + Estado ── -->
+                                    <Grid ColumnDefinitions="*,Auto"
+                                          Padding="14,12,14,10">
+
+                                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                                            <Label Text="ORDEN DE TRABAJO"
+                                                   FontSize="9"
+                                                   FontAttributes="Bold"
+                                                   TextColor="#9CA3AF"
+                                                   CharacterSpacing="1" />
+                                            <Label Text="{Binding CodigoOt}"
+                                                   FontSize="20"
+                                                   FontAttributes="Bold"
+                                                   TextColor="#1E3A8A" />
+                                        </VerticalStackLayout>
+
+                                        <!-- Badge Estado -->
+                                        <Frame Grid.Column="1"
+                                               Padding="10,5"
+                                               CornerRadius="20"
+                                               BorderColor="Transparent"
+                                               BackgroundColor="#DBEAFE"
+                                               HasShadow="False"
+                                               VerticalOptions="Center">
+                                            <Label Text="{Binding Estado}"
+                                                   FontSize="11"
+                                                   FontAttributes="Bold"
+                                                   TextColor="#1E40AF" />
+                                        </Frame>
+                                    </Grid>
+
+                                    <!-- Divisor -->
+                                    <BoxView HeightRequest="1"
+                                             BackgroundColor="#E5E7EB"
+                                             Margin="14,0" />
+
+                                    <!-- ── CUADRANTE DE DATOS ── -->
+                                    <Grid RowDefinitions="Auto,Auto"
+                                          ColumnDefinitions="*,*"
+                                          Padding="14,12,14,4"
+                                          RowSpacing="0"
+                                          ColumnSpacing="0">
+
+                                        <!-- [0,0] Reclamo -->
+                                        <Frame Grid.Row="0" Grid.Column="0"
+                                               Padding="10,8"
+                                               Margin="0,0,4,8"
+                                               CornerRadius="10"
+                                               BackgroundColor="#F0F9FF"
+                                               BorderColor="#BAE6FD"
+                                               HasShadow="False">
+                                            <VerticalStackLayout Spacing="3">
+                                                <Label Text="# RECLAMO"
+                                                       Style="{StaticResource LblKey}"
+                                                       TextColor="#0369A1" />
+                                                <Label Text="{Binding CodigoReclamo}"
+                                                       Style="{StaticResource LblVal}"
+                                                       TextColor="#0C4A6E"
+                                                       FontSize="12" />
+                                            </VerticalStackLayout>
+                                        </Frame>
+
+                                        <!-- [0,1] Sucursal -->
+                                        <Frame Grid.Row="0" Grid.Column="1"
+                                               Padding="10,8"
+                                               Margin="4,0,0,8"
+                                               CornerRadius="10"
+                                               BackgroundColor="#F0FDF4"
+                                               BorderColor="#BBF7D0"
+                                               HasShadow="False">
+                                            <VerticalStackLayout Spacing="3">
+                                                <Label Text="📍 SUCURSAL"
+                                                       Style="{StaticResource LblKey}"
+                                                       TextColor="#15803D" />
+                                                <Label Text="{Binding Sucursal}"
+                                                       Style="{StaticResource LblVal}"
+                                                       TextColor="#14532D"
+                                                       FontSize="12" />
+                                            </VerticalStackLayout>
+                                        </Frame>
+
+                                        <!-- [1,0] Fecha -->
+                                        <Frame Grid.Row="1" Grid.Column="0"
+                                               Padding="10,8"
+                                               Margin="0,0,4,8"
+                                               CornerRadius="10"
+                                               BackgroundColor="#FEFCE8"
+                                               BorderColor="#FDE68A"
+                                               HasShadow="False">
+                                            <VerticalStackLayout Spacing="3">
+                                                <Label Text="🕐 FECHA"
+                                                       Style="{StaticResource LblKey}"
+                                                       TextColor="#A16207" />
+                                                <Label Text="{Binding FechaHoraReclamo}"
+                                                       Style="{StaticResource LblVal}"
+                                                       TextColor="#713F12"
+                                                       FontSize="11" />
+                                            </VerticalStackLayout>
+                                        </Frame>
+
+                                        <!-- [1,1] Tipo -->
+                                        <Frame Grid.Row="1" Grid.Column="1"
+                                               Padding="10,8"
+                                               Margin="4,0,0,8"
+                                               CornerRadius="10"
+                                               BackgroundColor="#FDF4FF"
+                                               BorderColor="#E9D5FF"
+                                               HasShadow="False">
+                                            <VerticalStackLayout Spacing="3">
+                                                <Label Text="⚡ TIPO"
+                                                       Style="{StaticResource LblKey}"
+                                                       TextColor="#7E22CE" />
+                                                <Label Text="{Binding TipoReclamo}"
+                                                       Style="{StaticResource LblVal}"
+                                                       TextColor="#581C87"
+                                                       FontSize="11"
+                                                       LineBreakMode="WordWrap" />
+                                            </VerticalStackLayout>
+                                        </Frame>
+
+                                    </Grid>
+
+                                    <!-- Divisor antes de botones -->
+                                    <BoxView HeightRequest="1"
+                                             BackgroundColor="#F3F4F6"
+                                             Margin="14,0" />
+
+                                    <!-- ── BOTONES DE ACCIÓN ── -->
+                                    <Grid ColumnDefinitions="*,*"
+                                          ColumnSpacing="10"
+                                          Padding="14,10,14,14">
+
+                                        <!-- Ruta -->
+                                        <Button Grid.Column="0"
+                                                Text="🗺️  Ver Ruta"
+                                                FontSize="13"
+                                                FontAttributes="Bold"
+                                                TextColor="#6D28D9"
+                                                BackgroundColor="#EDE9FE"
+                                                CornerRadius="10"
+                                                HeightRequest="40"
+                                                Clicked="OnRutaClicked" />
+
+                                        <!-- Ejecutar -->
+                                        <Button Grid.Column="1"
+                                                Text="▶  Ejecutar"
+                                                FontSize="13"
+                                                FontAttributes="Bold"
+                                                TextColor="White"
+                                                BackgroundColor="#1D4ED8"
+                                                CornerRadius="10"
+                                                HeightRequest="40"
+                                                Clicked="OnEjecutarClicked" />
+
+                                    </Grid>
+
+                                </VerticalStackLayout>
+                            </Frame>
+
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+            </ScrollView>
+        </RefreshView>
+
+    </Grid>
+</ContentPage>

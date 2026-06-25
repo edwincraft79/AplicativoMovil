@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AplicacionMovil.Modules.Mantenimiento.Pages.RegistroItemCampoPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title=""
+    BackgroundColor="#F5F3FF">
+
+    <ContentPage.Resources>
+        <Style TargetType="Button" x:Key="CatBtn">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="HeightRequest" Value="36" />
+            <Setter Property="Padding" Value="6,0" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- ══ HEADER ══════════════════════════════════════════════════════ -->
+        <Frame Grid.Row="0" Padding="14,10,14,12"
+               CornerRadius="0" BorderColor="Transparent"
+               BackgroundColor="White" HasShadow="True">
+            <VerticalStackLayout Spacing="6">
+                <Grid ColumnDefinitions="*,Auto">
+                    <VerticalStackLayout Grid.Column="0" Spacing="1">
+                        <Label x:Name="lblTitulo" FontSize="15" FontAttributes="Bold" TextColor="#0F172A" />
+                        <Label x:Name="lblSubtitulo" FontSize="11" TextColor="#64748B" />
+                    </VerticalStackLayout>
+                    <Button Grid.Column="1" Text="← Volver"
+                            FontSize="12" TextColor="White" BackgroundColor="#64748B"
+                            CornerRadius="8" HeightRequest="32" Padding="8,0"
+                            Clicked="OnVolverClicked" />
+                </Grid>
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- ══ FORMULARIO ══════════════════════════════════════════════════ -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="14,12" Spacing="12">
+
+                <!-- Ítems del plan (precargados) -->
+                <Frame Padding="14,12" CornerRadius="14"
+                       BorderColor="#DDD6FE" BackgroundColor="White" HasShadow="False">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="📋 Ítems del Plan (ajusta cantidad real)"
+                               FontSize="13" FontAttributes="Bold" TextColor="#4C1D95" />
+                        <CollectionView x:Name="colItemsPlan"
+                                        SelectionMode="None">
+                            <CollectionView.EmptyView>
+                                <Label Text="Sin ítems precargados para esta OT"
+                                       FontSize="12" TextColor="#94A3B8"
+                                       HorizontalTextAlignment="Center" Margin="0,8" />
+                            </CollectionView.EmptyView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid ColumnDefinitions="*,Auto,Auto"
+                                          Padding="0,4" ColumnSpacing="8">
+                                        <VerticalStackLayout Grid.Column="0" Spacing="1">
+                                            <Label Text="{Binding Descripcion}"
+                                                   FontSize="12" TextColor="#0F172A" LineBreakMode="TailTruncation" />
+                                            <Label Text="{Binding Unidad}" FontSize="10" TextColor="#94A3B8" />
+                                        </VerticalStackLayout>
+                                        <Entry Grid.Column="1"
+                                               Text="{Binding CantidadReal}"
+                                               Keyboard="Numeric" WidthRequest="60"
+                                               FontSize="13" HorizontalTextAlignment="Center"
+                                               Placeholder="0" />
+                                        <Label Grid.Column="2"
+                                               Text="{Binding Tipo}" FontSize="10"
+                                               TextColor="White" BackgroundColor="#7C3AED"
+                                               Padding="4,2" VerticalOptions="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Ítems extra libres -->
+                <Frame Padding="14,12" CornerRadius="14"
+                       BorderColor="#DDD6FE" BackgroundColor="White" HasShadow="False">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="➕ Ítems Extra en Campo"
+                               FontSize="13" FontAttributes="Bold" TextColor="#4C1D95" />
+
+                        <!-- Botones de categoría -->
+                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="6">
+                            <Button Grid.Column="0" Text="+ Instalación"
+                                    Style="{StaticResource CatBtn}"
+                                    TextColor="White" BackgroundColor="#3B82F6"
+                                    Clicked="OnAgregarInstalacionClicked" />
+                            <Button Grid.Column="1" Text="+ Retiro"
+                                    Style="{StaticResource CatBtn}"
+                                    TextColor="White" BackgroundColor="#EF4444"
+                                    Clicked="OnAgregarRetiroClicked" />
+                            <Button Grid.Column="2" Text="+ M.O."
+                                    Style="{StaticResource CatBtn}"
+                                    TextColor="#92400E" BackgroundColor="#FDE68A"
+                                    Clicked="OnAgregarManoObraClicked" />
+                        </Grid>
+
+                        <StackLayout x:Name="stackItemsExtra" Spacing="8" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- GPS -->
+                <Frame Padding="14,12" CornerRadius="14"
+                       BorderColor="#DDD6FE" BackgroundColor="White" HasShadow="False">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="📍 Ubicación GPS"
+                               FontSize="13" FontAttributes="Bold" TextColor="#4C1D95" />
+                        <Label x:Name="lblGps"
+                               Text="No capturado — presiona para obtener"
+                               FontSize="12" TextColor="#94A3B8"
+                               HorizontalTextAlignment="Center" />
+                        <Button Text="📍 Capturar GPS"
+                                FontSize="13" TextColor="White" BackgroundColor="#0EA5E9"
+                                CornerRadius="10" HeightRequest="38"
+                                Clicked="OnCapturarGpsClicked" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Fotos -->
+                <Frame Padding="14,12" CornerRadius="14"
+                       BorderColor="#DDD6FE" BackgroundColor="White" HasShadow="False">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="📷 Evidencia Fotográfica"
+                               FontSize="13" FontAttributes="Bold" TextColor="#4C1D95" />
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                            <VerticalStackLayout Grid.Column="0" Spacing="4">
+                                <Label Text="Antes" FontSize="11" TextColor="#64748B"
+                                       HorizontalTextAlignment="Center" />
+                                <Button x:Name="btnFotoAntes" Text="📷 Foto Antes"
+                                        FontSize="12" TextColor="White" BackgroundColor="#64748B"
+                                        CornerRadius="10" HeightRequest="38"
+                                        Clicked="OnFotoAntesClicked" />
+                                <Image x:Name="imgAntes" HeightRequest="70"
+                                       Aspect="AspectFill" IsVisible="False" />
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" Spacing="4">
+                                <Label Text="Después" FontSize="11" TextColor="#64748B"
+                                       HorizontalTextAlignment="Center" />
+                                <Button x:Name="btnFotoDespues" Text="📷 Foto Después"
+                                        FontSize="12" TextColor="White" BackgroundColor="#22C55E"
+                                        CornerRadius="10" HeightRequest="38"
+                                        Clicked="OnFotoDespuesClicked" />
+                                <Image x:Name="imgDespues" HeightRequest="70"
+                                       Aspect="AspectFill" IsVisible="False" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Observación -->
+                <Frame Padding="14,12" CornerRadius="14"
+                       BorderColor="#DDD6FE" BackgroundColor="White" HasShadow="False">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="📝 Observación"
+                               FontSize="13" FontAttributes="Bold" TextColor="#4C1D95" />
+                        <Editor x:Name="txtObservacion"
+                                Placeholder="Describe el trabajo, hallazgos, condiciones..."
+                                FontSize="13" HeightRequest="80"
+                                BackgroundColor="#F5F3FF" TextColor="#0F172A" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Guardar -->
+                <Frame Padding="0" CornerRadius="14"
+                       BorderColor="Transparent" BackgroundColor="#7C3AED" HasShadow="True">
+                    <Button x:Name="btnGuardar"
+                            Text="💾 Guardar Registro"
+                            FontSize="15" FontAttributes="Bold"
+                            TextColor="White" BackgroundColor="Transparent"
+                            HeightRequest="52"
+                            Clicked="OnGuardarClicked" />
+                </Frame>
+
+                <ActivityIndicator x:Name="actIndicator"
+                                   IsRunning="False" IsVisible="False"
+                                   Color="#7C3AED" HorizontalOptions="Center" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

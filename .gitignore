@@ -1,3 +1,6 @@
+## Publicación (binarios compilados)
+publish-apk/
+
 ## Visual Studio
 .vs/
 .vscode/

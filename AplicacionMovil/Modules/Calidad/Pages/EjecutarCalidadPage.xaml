@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AplicacionMovil.Modules.Calidad.Pages.EjecutarCalidadPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title=""
+    BackgroundColor="#F0FDF4">
+
+    <ContentPage.Resources>
+        <Style TargetType="Button" x:Key="HeaderButton">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="FontAttributes" Value="Bold" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- ══ BARRA SUPERIOR ══════════════════════════════════════════ -->
+        <Frame Grid.Row="0"
+               Padding="0" CornerRadius="20"
+               BorderColor="Transparent"
+               HasShadow="True"
+               BackgroundColor="White">
+            <Grid RowDefinitions="Auto,Auto,Auto" Padding="16,12,16,14">
+
+                <BoxView Grid.Row="0"
+                         BackgroundColor="#10B981" HeightRequest="3"
+                         CornerRadius="2" Margin="0,0,0,10" />
+
+                <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="0,0,0,10">
+                    <VerticalStackLayout Grid.Column="0" Spacing="2">
+                        <Label Text="✓ Ejecutar Medición"
+                               FontSize="17" FontAttributes="Bold" TextColor="#0F172A" />
+                        <Label x:Name="lblSubtitulo"
+                               Text="Cargando..."
+                               FontSize="11" TextColor="#64748B" />
+                    </VerticalStackLayout>
+                    <Frame Grid.Column="1"
+                           Padding="8,4" CornerRadius="8"
+                           BorderColor="Transparent"
+                           BackgroundColor="#D1FAE5" HasShadow="False">
+                        <Label x:Name="lblModalidad"
+                               Text="RURAL"
+                               FontSize="11" FontAttributes="Bold" TextColor="#065F46" />
+                    </Frame>
+                </Grid>
+
+                <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <Button Grid.Column="0"
+                            Text="← Volver"
+                            Style="{StaticResource HeaderButton}"
+                            BackgroundColor="#64748B"
+                            HeightRequest="36"
+                            Clicked="OnVolverClicked" />
+                    <Button Grid.Column="1"
+                            Text="📍 Mi GPS"
+                            Style="{StaticResource HeaderButton}"
+                            BackgroundColor="#0EA5E9"
+                            HeightRequest="36"
+                            Clicked="OnObtenerGpsClicked" />
+                </Grid>
+            </Grid>
+        </Frame>
+
+        <!-- ══ FORMULARIO ═════════════════════════════════════════════ -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16,12" Spacing="12">
+
+                <!-- Datos de la OT (solo lectura) -->
+                <Frame Padding="14,12" CornerRadius="14"
+                       BorderColor="#D1FAE5" BackgroundColor="White" HasShadow="False">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="📋 Datos de la OT"
+                               FontSize="13" FontAttributes="Bold" TextColor="#065F46" />
+
+                        <Grid ColumnDefinitions="Auto,*"
+                              RowDefinitions="Auto,Auto,Auto"
+                              ColumnSpacing="10" RowSpacing="4">
+                            <Label Grid.Row="0" Grid.Column="0" Text="COD_SED:"
+                                   FontSize="12" FontAttributes="Bold" TextColor="#64748B" />
+                            <Label Grid.Row="0" Grid.Column="1" x:Name="lblCodSed"
+                                   FontSize="12" TextColor="#0F172A" />
+
+                            <Label Grid.Row="1" Grid.Column="0" Text="Suministro:"
+                                   FontSize="12" FontAttributes="Bold" TextColor="#64748B" />
+                            <Label Grid.Row="1" Grid.Column="1" x:Name="lblSuministro"
+                                   FontSize="12" TextColor="#0F172A" />
+
+                            <Label Grid.Row="2" Grid.Column="0" Text="Cliente:"
+                                   FontSize="12" FontAttributes="Bold" TextColor="#64748B" />
+                            <Label Grid.Row="2" Grid.Column="1" x:Name="lblCliente"
+                                   FontSize="12" TextColor="#0F172A"
+                                   LineBreakMode="TailTruncation" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- GPS capturado -->
+                <Frame Padding="14,12" CornerRadius="14"
+                       BorderColor="#D1FAE5" BackgroundColor="White" HasShadow="False">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="📍 GPS en Campo"
+                               FontSize="13" FontAttributes="Bold" TextColor="#065F46" />
+                        <Label x:Name="lblGps"
+                               Text="Presiona 'Mi GPS' para capturar coordenadas"
+                               FontSize="12" TextColor="#64748B"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Resultado -->
+                <Frame Padding="14,12" CornerRadius="14"
+                       BorderColor="#D1FAE5" BackgroundColor="White" HasShadow="False">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="✅ Resultado"
+                               FontSize="13" FontAttributes="Bold" TextColor="#065F46" />
+                        <Picker x:Name="pkrResultado"
+                                Title="Seleccione resultado"
+                                FontSize="13"
+                                TextColor="#0F172A">
+                            <Picker.Items>
+                                <x:String>Conforme</x:String>
+                                <x:String>No conforme</x:String>
+                                <x:String>Observado</x:String>
+                            </Picker.Items>
+                        </Picker>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Descripción -->
+                <Frame Padding="14,12" CornerRadius="14"
+                       BorderColor="#D1FAE5" BackgroundColor="White" HasShadow="False">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="📝 Descripción / Observaciones"
+                               FontSize="13" FontAttributes="Bold" TextColor="#065F46" />
+                        <Editor x:Name="txtDescripcion"
+                                Placeholder="Describe lo observado en campo..."
+                                FontSize="13"
+                                TextColor="#0F172A"
+                                HeightRequest="100"
+                                BackgroundColor="#F0FDF4" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Fotos -->
+                <Frame Padding="14,12" CornerRadius="14"
+                       BorderColor="#D1FAE5" BackgroundColor="White" HasShadow="False">
+                    <VerticalStackLayout Spacing="8">
+                        <Grid ColumnDefinitions="*,Auto">
+                            <Label Grid.Column="0"
+                                   Text="📷 Fotos (máx. 5)"
+                                   FontSize="13" FontAttributes="Bold" TextColor="#065F46" />
+                            <Label Grid.Column="1"
+                                   x:Name="lblContadorFotos"
+                                   Text="0/5"
+                                   FontSize="12" TextColor="#64748B" />
+                        </Grid>
+
+                        <Button Text="📷 Tomar Foto"
+                                FontSize="13" FontAttributes="Bold"
+                                TextColor="White"
+                                BackgroundColor="#0EA5E9"
+                                CornerRadius="10"
+                                HeightRequest="40"
+                                Clicked="OnTomarFotoClicked" />
+
+                        <!-- Miniaturas -->
+                        <FlexLayout x:Name="flxFotos"
+                                    Wrap="Wrap"
+                                    Direction="Row"
+                                    JustifyContent="Start"
+                                    AlignItems="Start" />
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Botón Enviar -->
+                <Frame Padding="0" CornerRadius="14"
+                       BorderColor="Transparent"
+                       BackgroundColor="#10B981" HasShadow="True">
+                    <Button x:Name="btnEnviar"
+                            Text="⚡ Enviar Medición"
+                            FontSize="15"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            BackgroundColor="Transparent"
+                            HeightRequest="52"
+                            Clicked="OnEnviarClicked" />
+                </Frame>
+
+                <!-- Indicador de envío -->
+                <ActivityIndicator x:Name="actIndicator"
+                                   IsRunning="False"
+                                   IsVisible="False"
+                                   Color="#10B981"
+                                   HorizontalOptions="Center" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+</ContentPage>

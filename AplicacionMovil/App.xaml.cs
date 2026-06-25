@@ -1,4 +1,4 @@
-﻿using AplicacionMovil.Data;
+﻿using AplicacionMovil.Core.Models;
 using AplicacionMovil.Services;
 
 namespace AplicacionMovil
@@ -40,7 +40,7 @@ namespace AplicacionMovil
                 if (ok && SesionMovil.EstaLogueado)
                 {
                     await ApiClient.ApplyBearerAsync();   // ✅
-                    await Shell.Current.GoToAsync("//MisOtPage");
+                    await Shell.Current.GoToAsync("//HomePage");
                 }
                 else
                 {

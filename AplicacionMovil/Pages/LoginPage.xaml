@@ -4,98 +4,137 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     Title="Iniciar sesión"
-    BackgroundColor="#F3F4F6">
+    BackgroundColor="#F8FAFC">
 
     <ContentPage.Resources>
+        <!-- Estilos mejorados -->
         <Style TargetType="Label" x:Key="TitleLabel">
-            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontSize" Value="28" />
             <Setter Property="FontAttributes" Value="Bold" />
-            <Setter Property="TextColor" Value="#111827" />
+            <Setter Property="TextColor" Value="#0F172A" />
         </Style>
 
-        <Style TargetType="Label" x:Key="CaptionLabel">
+        <Style TargetType="Label" x:Key="SubtitleLabel">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="TextColor" Value="#64748B" />
+        </Style>
+
+        <Style TargetType="Label" x:Key="FieldLabel">
             <Setter Property="FontSize" Value="13" />
-            <Setter Property="TextColor" Value="#6B7280" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="#475569" />
+        </Style>
+
+        <Style TargetType="Entry">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="TextColor" Value="#0F172A" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="HeightRequest" Value="48" />
         </Style>
 
         <Style TargetType="Picker">
             <Setter Property="BackgroundColor" Value="Transparent" />
-            <Setter Property="FontSize" Value="14" />
-            <Setter Property="HeightRequest" Value="40" />
+            <Setter Property="TextColor" Value="#0F172A" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="HeightRequest" Value="48" />
         </Style>
 
         <Style TargetType="Button" x:Key="PrimaryButton">
-            <Setter Property="BackgroundColor" Value="#2563EB" />
+            <Setter Property="BackgroundColor" Value="#3B82F6" />
             <Setter Property="TextColor" Value="White" />
-            <Setter Property="CornerRadius" Value="12" />
-            <Setter Property="HeightRequest" Value="46" />
+            <Setter Property="CornerRadius" Value="14" />
+            <Setter Property="HeightRequest" Value="52" />
             <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="16" />
         </Style>
     </ContentPage.Resources>
 
-    <Grid Padding="24">
+    <Grid>
         <ScrollView>
             <VerticalStackLayout
-                Spacing="18"
-                VerticalOptions="CenterAndExpand">
+                Padding="24,32,24,24"
+                Spacing="0">
 
-                <!-- Título / encabezado -->
-                <Label Text="Ingreso operador"
-                       Style="{StaticResource TitleLabel}"
-                       HorizontalOptions="Center" />
+                <!-- Logo de la empresa -->
+                <Image
+                    Source="logo_empresa.png"
+                    WidthRequest="100"
+                    HeightRequest="100"
+                    HorizontalOptions="Center"
+                    Margin="0,0,0,24" />
 
-                <Label Text="Registro de Operador Móvil"
-                       FontSize="14"
-                       TextColor="#6B7280"
-                       HorizontalOptions="Center" />
+                <!-- Título -->
+                <Label
+                    Text="Bienvenido"
+                    Style="{StaticResource TitleLabel}"
+                    HorizontalOptions="Center"
+                    Margin="0,0,0,8" />
 
-                <!-- Tarjeta de login -->
+                <Label
+                    Text="Ingresa tus credenciales para continuar"
+                    Style="{StaticResource SubtitleLabel}"
+                    HorizontalOptions="Center"
+                    Margin="0,0,0,32" />
+
+                <!-- Tarjeta principal de login -->
                 <Frame
-                    Margin="0,16,0,0"
-                    Padding="18"
+                    Padding="0"
                     BackgroundColor="White"
-                    BorderColor="#E5E7EB"
-                    CornerRadius="16"
-                    HasShadow="False">
+                    BorderColor="Transparent"
+                    CornerRadius="20"
+                    HasShadow="True"
+                    Margin="0,0,0,20">
 
-                    <VerticalStackLayout Spacing="14">
+                    <VerticalStackLayout Padding="24" Spacing="20">
 
-                        <!-- Operador -->
-                        <VerticalStackLayout Spacing="4">
-                            <Label Text="Usuario (Cliente)"
-                                   Style="{StaticResource CaptionLabel}" />
-                            <Frame Padding="10"
-       CornerRadius="10"
-       BorderColor="#CBD5E1"
-       BackgroundColor="#F9FAFB">
+                        <!-- Usuario (Cliente) con autocomplete -->
+                        <VerticalStackLayout Spacing="8">
+                            <Label
+                                Text="Usuario (Cliente)"
+                                Style="{StaticResource FieldLabel}" />
 
-                                <Grid RowDefinitions="Auto,Auto">
-                                    <!-- Entry (usuario) -->
-                                    <Entry x:Name="txtOperador"
-               Placeholder="Escriba usuario (ej: ecoarite)"
-               BackgroundColor="Transparent"
-               TextChanged="OnOperadorTextChanged"
-               Completed="OnOperadorCompleted" />
+                            <Frame
+                                Padding="0"
+                                CornerRadius="12"
+                                BorderColor="#E2E8F0"
+                                BackgroundColor="#F8FAFC"
+                                HasShadow="False">
 
-                                    <!-- Lista de sugerencias (dropdown) -->
-                                    <Border x:Name="panelOperadores"
-                Grid.Row="1"
-                Stroke="#CBD5E1"
-                StrokeThickness="1"
-                BackgroundColor="White"
-                IsVisible="False"
-                Margin="0,8,0,0">
-                                        <CollectionView x:Name="cvOperadores"
-                            SelectionMode="Single"
-                            SelectionChanged="OnOperadorSelected"
-                            HeightRequest="200">
+                                <Grid RowDefinitions="Auto,Auto" Padding="16,0">
+
+                                    <!-- Entry principal -->
+                                    <Entry
+                                        x:Name="txtOperador"
+                                        Grid.Row="0"
+                                        Placeholder="Ej: ecoarite"
+                                        PlaceholderColor="#94A3B8"
+                                        TextChanged="OnOperadorTextChanged"
+                                        Completed="OnOperadorCompleted" />
+
+                                    <!-- Panel de sugerencias -->
+                                    <Border
+                                        x:Name="panelOperadores"
+                                        Grid.Row="1"
+                                        Stroke="#E2E8F0"
+                                        StrokeThickness="1"
+                                        BackgroundColor="White"
+                                        StrokeShape="RoundRectangle 8"
+                                        IsVisible="False"
+                                        Margin="0,12,0,0">
+
+                                        <CollectionView
+                                            x:Name="cvOperadores"
+                                            SelectionMode="Single"
+                                            SelectionChanged="OnOperadorSelected"
+                                            MaximumHeightRequest="180">
+
                                             <CollectionView.ItemTemplate>
                                                 <DataTemplate>
-                                                    <Grid Padding="10">
-                                                        <!-- Cambia Usuario por tu propiedad real -->
-                                                        <Label Text="{Binding Usuario}"
-       FontSize="14"
-       TextColor="#111827" />
+                                                    <Grid Padding="14,12">
+                                                        <Label
+                                                            Text="{Binding Usuario}"
+                                                            FontSize="15"
+                                                            TextColor="#0F172A" />
                                                     </Grid>
                                                 </DataTemplate>
                                             </CollectionView.ItemTemplate>
@@ -103,66 +142,111 @@
                                     </Border>
                                 </Grid>
                             </Frame>
-
                         </VerticalStackLayout>
 
-                        <!-- Móvil -->
-                        <VerticalStackLayout Spacing="4" Margin="0,8,0,0">
-                            <Label Text="Equipo móvil"
-                                   Style="{StaticResource CaptionLabel}" />
-                            <Frame Padding="6"
-                                   CornerRadius="10"
-                                   BorderColor="#CBD5E1"
-                                   BackgroundColor="#F9FAFB">
-                                <Picker x:Name="pkMovil"
-                                        Title="Seleccione móvil" />
+                        <!-- Equipo móvil -->
+                        <VerticalStackLayout Spacing="8">
+                            <Label
+                                Text="Equipo móvil"
+                                Style="{StaticResource FieldLabel}" />
+
+                            <Frame
+                                Padding="16,0"
+                                CornerRadius="12"
+                                BorderColor="#E2E8F0"
+                                BackgroundColor="#F8FAFC"
+                                HasShadow="False">
+
+                                <Picker
+                                    x:Name="pkMovil"
+                                    Title="Seleccione su equipo"
+                                    TitleColor="#94A3B8" />
                             </Frame>
                         </VerticalStackLayout>
 
-                        <!-- Contraseña -->
-                        <VerticalStackLayout Spacing="4" Margin="0,8,0,0">
-                            <Label Text="Contraseña"
-                               Style="{StaticResource CaptionLabel}" />
+                        <!-- Contraseña con botón de mostrar/ocultar -->
+                        <VerticalStackLayout Spacing="8">
+                            <Label
+                                Text="Contraseña"
+                                Style="{StaticResource FieldLabel}" />
 
-                                                <Frame Padding="6"
-                               CornerRadius="10"
-                               BorderColor="#CBD5E1"
-                               BackgroundColor="#F9FAFB">
+                            <Frame
+                                Padding="16,0,8,0"
+                                CornerRadius="12"
+                                BorderColor="#E2E8F0"
+                                BackgroundColor="#F8FAFC"
+                                HasShadow="False">
 
-                                                    <Grid ColumnDefinitions="*,Auto"
-                                  VerticalOptions="Center">
+                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
 
-                                    <!-- Entry contraseña -->
-                                    <Entry x:Name="txtPassword"
-                               Grid.Column="0"
-                               Placeholder="Ingrese contraseña"
-                               IsPassword="True"
-                               BackgroundColor="Transparent" />
+                                    <!-- Entry de contraseña -->
+                                    <Entry
+                                        x:Name="txtPassword"
+                                        Grid.Column="0"
+                                        Placeholder="Ingrese su contraseña"
+                                        PlaceholderColor="#94A3B8"
+                                        IsPassword="True" />
 
-                                    <!-- Ojo -->
-                                    <Button x:Name="btnTogglePassword"
+                                    <!-- Botón ojo para mostrar/ocultar -->
+                                    <Button
+                                        x:Name="btnTogglePassword"
                                         Grid.Column="1"
                                         Text="👁️"
                                         BackgroundColor="Transparent"
-                                        FontSize="18"
-                                        WidthRequest="36"
-                                        HeightRequest="36"
-                                        Clicked="OnTogglePasswordClicked"/>
+                                        TextColor="#64748B"
+                                        FontSize="20"
+                                        WidthRequest="44"
+                                        HeightRequest="44"
+                                        CornerRadius="8"
+                                        Clicked="OnTogglePasswordClicked" />
                                 </Grid>
-
                             </Frame>
                         </VerticalStackLayout>
 
-                        <!-- Botón ingresar -->
-                        <Button Text="Ingresar"
-                                Margin="0,14,0,0"
-                                Style="{StaticResource PrimaryButton}"
-                                Clicked="OnLoginClicked" />
+                        <!-- Botón Ingresar -->
+                        <Button
+                            Text="Ingresar"
+                            Style="{StaticResource PrimaryButton}"
+                            Margin="0,12,0,0"
+                            Clicked="OnLoginClicked">
+                            <Button.Shadow>
+                                <Shadow
+                                    Brush="#3B82F6"
+                                    Offset="0,4"
+                                    Radius="12"
+                                    Opacity="0.3" />
+                            </Button.Shadow>
+                        </Button>
 
                     </VerticalStackLayout>
                 </Frame>
 
             </VerticalStackLayout>
         </ScrollView>
+
+        <!-- Indicador de carga (overlay) -->
+        <Grid
+            x:Name="loadingOverlay"
+            IsVisible="False"
+            BackgroundColor="#80000000">
+
+            <VerticalStackLayout
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Spacing="16">
+
+                <ActivityIndicator
+                    IsRunning="True"
+                    Color="White"
+                    WidthRequest="48"
+                    HeightRequest="48" />
+
+                <Label
+                    Text="Verificando credenciales..."
+                    TextColor="White"
+                    FontSize="15"
+                    FontAttributes="Bold" />
+            </VerticalStackLayout>
+        </Grid>
     </Grid>
 </ContentPage>

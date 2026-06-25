@@ -1,4 +1,7 @@
-﻿using AplicacionMovil.Pages;
+﻿using AplicacionMovil.Modules.Reclamos.Pages;
+using AplicacionMovil.Modules.Deficiencias.Pages;
+using AplicacionMovil.Modules.Calidad.Pages;
+using AplicacionMovil.Modules.Mantenimiento.Pages;
 
 namespace AplicacionMovil;
 
@@ -8,19 +11,27 @@ public partial class AppShell : Shell
     {
         InitializeComponent();
 
-        // ✅ Ruta “oficial” del módulo Reclamos
+        // ✅ Reclamos
         Routing.RegisterRoute("Reclamos/Historial", typeof(HistorialPage));
-
-        // ✅ Alias por compatibilidad
         Routing.RegisterRoute("HistorialPage", typeof(HistorialPage));
-
         Routing.RegisterRoute(nameof(RegistroInterrupcionesPage), typeof(RegistroInterrupcionesPage));
-
-        // ✅ MAPA OT
         Routing.RegisterRoute(nameof(OtMapPage), typeof(OtMapPage));
 
-        //Deficiencias
+        // ✅ Deficiencias
         Routing.RegisterRoute(nameof(DeficienciasMapPage), typeof(DeficienciasMapPage));
+        Routing.RegisterRoute("RegistroDeficienciasPage", typeof(RegistroDeficienciasPage));
         Routing.RegisterRoute(nameof(MisDeficienciasPage), typeof(MisDeficienciasPage));
+        Routing.RegisterRoute(nameof(HistorialDeficienciasPage), typeof(HistorialDeficienciasPage));
+        Routing.RegisterRoute(nameof(RegistroInspeccionDefPage), typeof(RegistroInspeccionDefPage));
+
+        // ✅ Calidad de Producto
+        Routing.RegisterRoute(nameof(MisOtCalidadPage), typeof(MisOtCalidadPage));
+        Routing.RegisterRoute(nameof(EjecutarCalidadPage), typeof(EjecutarCalidadPage));
+
+        // ✅ Mantenimiento
+        Routing.RegisterRoute(nameof(MisOtMantenimientoPage), typeof(MisOtMantenimientoPage));
+        Routing.RegisterRoute(nameof(EjecutarMantenimientoPage), typeof(EjecutarMantenimientoPage));
+        Routing.RegisterRoute(nameof(MapaCampoPage), typeof(MapaCampoPage));
+        Routing.RegisterRoute(nameof(RegistroItemCampoPage), typeof(RegistroItemCampoPage));
     }
 }

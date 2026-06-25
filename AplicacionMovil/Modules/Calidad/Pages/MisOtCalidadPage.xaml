@@ -1,0 +1,327 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AplicacionMovil.Modules.Calidad.Pages.MisOtCalidadPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title=""
+    BackgroundColor="#F0FDF4">
+
+    <ContentPage.Resources>
+        <Style TargetType="Button" x:Key="HeaderButton">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="FontAttributes" Value="Bold" />
+        </Style>
+
+        <Style TargetType="Button" x:Key="ActionButton">
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="HeightRequest" Value="36" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="FontSize" Value="13" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- ══ BARRA SUPERIOR ══════════════════════════════════════════ -->
+        <Frame Grid.Row="0"
+               Padding="0"
+               CornerRadius="20"
+               BorderColor="Transparent"
+               HasShadow="True"
+               BackgroundColor="White">
+
+            <Grid RowDefinitions="Auto,Auto,Auto"
+                  Padding="16,12,16,14">
+
+                <!-- Franja decorativa verde calidad -->
+                <BoxView Grid.Row="0"
+                         BackgroundColor="#10B981"
+                         HeightRequest="3"
+                         CornerRadius="2"
+                         Margin="0,0,0,10" />
+
+                <!-- Título + Contador -->
+                <Grid Grid.Row="1" ColumnDefinitions="*,Auto" Margin="0,0,0,10">
+                    <VerticalStackLayout Grid.Column="0" Spacing="2">
+                        <Label Text="⚡ Calidad de Producto"
+                               FontSize="17"
+                               FontAttributes="Bold"
+                               TextColor="#0F172A"
+                               VerticalOptions="Center" />
+                        <Label Text="Mediciones / OTs asignadas"
+                               FontSize="11"
+                               TextColor="#64748B" />
+                    </VerticalStackLayout>
+
+                    <Frame Grid.Column="1"
+                           Padding="10,5"
+                           CornerRadius="10"
+                           BorderColor="Transparent"
+                           BackgroundColor="#D1FAE5"
+                           HasShadow="False"
+                           VerticalOptions="Center">
+                        <Label x:Name="lblContadorOts"
+                               Text="0 OTs"
+                               FontSize="13"
+                               FontAttributes="Bold"
+                               TextColor="#065F46" />
+                    </Frame>
+                </Grid>
+
+                <!-- Botones de cabecera -->
+                <Grid Grid.Row="2" ColumnDefinitions="*,*,*" ColumnSpacing="8">
+
+                    <Button Grid.Column="0"
+                            Text="← Inicio"
+                            Style="{StaticResource HeaderButton}"
+                            BackgroundColor="#10B981"
+                            HeightRequest="36"
+                            Clicked="OnVolverInicioClicked" />
+
+                    <Button Grid.Column="1"
+                            Text="🔄 Actualizar"
+                            Style="{StaticResource HeaderButton}"
+                            BackgroundColor="#0EA5E9"
+                            HeightRequest="36"
+                            Clicked="OnRefreshClicked" />
+
+                    <Button Grid.Column="2"
+                            Text="🚪 Salir"
+                            Style="{StaticResource HeaderButton}"
+                            BackgroundColor="#DC2626"
+                            HeightRequest="36"
+                            Clicked="OnLogoutClicked" />
+                </Grid>
+            </Grid>
+        </Frame>
+
+        <!-- ══ CONTENIDO PRINCIPAL ════════════════════════════════════ -->
+        <Grid Grid.Row="1" RowDefinitions="Auto,*" Padding="16,12,16,16">
+
+            <!-- Filtro RURAL / URBANO / TODOS -->
+            <Frame Grid.Row="0"
+                   Padding="8,6"
+                   CornerRadius="12"
+                   BorderColor="#D1FAE5"
+                   BackgroundColor="White"
+                   HasShadow="False"
+                   Margin="0,0,0,12">
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="6">
+                    <Button Grid.Column="0"
+                            x:Name="btnFiltroTodos"
+                            Text="🔢 Todos"
+                            FontSize="12"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            BackgroundColor="#10B981"
+                            CornerRadius="8"
+                            HeightRequest="32"
+                            Clicked="OnFiltroTodos" />
+                    <Button Grid.Column="1"
+                            x:Name="btnFiltroRural"
+                            Text="🌾 Rural"
+                            FontSize="12"
+                            FontAttributes="Bold"
+                            TextColor="#065F46"
+                            BackgroundColor="#D1FAE5"
+                            CornerRadius="8"
+                            HeightRequest="32"
+                            Clicked="OnFiltroRural" />
+                    <Button Grid.Column="2"
+                            x:Name="btnFiltroUrbano"
+                            Text="🏘️ Urbano"
+                            FontSize="12"
+                            FontAttributes="Bold"
+                            TextColor="#1E40AF"
+                            BackgroundColor="#DBEAFE"
+                            CornerRadius="8"
+                            HeightRequest="32"
+                            Clicked="OnFiltroUrbano" />
+                </Grid>
+            </Frame>
+
+            <!-- Lista con RefreshView -->
+            <RefreshView Grid.Row="1"
+                         x:Name="refreshView"
+                         RefreshColor="#10B981"
+                         Refreshing="OnRefreshOts">
+
+                <ScrollView>
+                    <VerticalStackLayout Spacing="12">
+
+                        <!-- Sin OTs -->
+                        <Frame x:Name="frameVacio"
+                               IsVisible="False"
+                               Padding="24"
+                               CornerRadius="16"
+                               BorderColor="#D1FAE5"
+                               BackgroundColor="White"
+                               HasShadow="False">
+                            <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                                <Label Text="⚡" FontSize="36" HorizontalOptions="Center" />
+                                <Label Text="Sin OTs asignadas"
+                                       FontSize="15"
+                                       FontAttributes="Bold"
+                                       TextColor="#065F46"
+                                       HorizontalOptions="Center" />
+                                <Label Text="Cuando el coordinador asigne mediciones aparecerán aquí."
+                                       FontSize="12"
+                                       TextColor="#64748B"
+                                       HorizontalOptions="Center"
+                                       HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </Frame>
+
+                        <!-- Tarjetas de OTs -->
+                        <VerticalStackLayout x:Name="cvOrdenes"
+                                             Spacing="12"
+                                             BindableLayout.ItemsSource="{Binding OtsFiltradas}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame Padding="0"
+                                           CornerRadius="16"
+                                           HasShadow="True"
+                                           BorderColor="Transparent"
+                                           BackgroundColor="White">
+
+                                        <Grid RowDefinitions="Auto,Auto,Auto">
+
+                                            <!-- Barra superior: verde=Rural, azul=Urbano -->
+                                            <BoxView Grid.Row="0"
+                                                     BackgroundColor="{Binding ColorModalidad}"
+                                                     HeightRequest="4"
+                                                     CornerRadius="16,16,0,0" />
+
+                                            <!-- Datos de la OT -->
+                                            <VerticalStackLayout Grid.Row="1"
+                                                                 Padding="16,14"
+                                                                 Spacing="8">
+
+                                                <!-- Encabezado: OtId + Badge modalidad + Estado -->
+                                                <Grid ColumnDefinitions="Auto,*,Auto">
+
+                                                    <Label Grid.Column="0"
+                                                           Text="{Binding IconoModalidad}"
+                                                           FontSize="22"
+                                                           VerticalOptions="Center"
+                                                           Margin="0,0,8,0" />
+
+                                                    <VerticalStackLayout Grid.Column="1" Spacing="1">
+                                                        <Label Text="{Binding CodSed}"
+                                                               FontAttributes="Bold"
+                                                               FontSize="16"
+                                                               TextColor="#0F172A" />
+                                                        <Label Text="{Binding Modalidad}"
+                                                               FontSize="11"
+                                                               TextColor="#64748B" />
+                                                    </VerticalStackLayout>
+
+                                                    <!-- Badge estado OT -->
+                                                    <Frame Grid.Column="2"
+                                                           Padding="8,4"
+                                                           CornerRadius="8"
+                                                           BorderColor="Transparent"
+                                                           BackgroundColor="#D1FAE5"
+                                                           HasShadow="False"
+                                                           VerticalOptions="Center">
+                                                        <Label Text="{Binding EstadoOt}"
+                                                               FontSize="10"
+                                                               FontAttributes="Bold"
+                                                               TextColor="#065F46" />
+                                                    </Frame>
+                                                </Grid>
+
+                                                <!-- Datos en grid -->
+                                                <Grid ColumnDefinitions="Auto,*"
+                                                      RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                                                      ColumnSpacing="10"
+                                                      RowSpacing="5"
+                                                      Margin="0,4,0,0">
+
+                                                    <Label Grid.Row="0" Grid.Column="0"
+                                                           Text="Suministro:"
+                                                           FontSize="12" FontAttributes="Bold" TextColor="#64748B" />
+                                                    <Label Grid.Row="0" Grid.Column="1"
+                                                           Text="{Binding SuministroPrincipal}"
+                                                           FontSize="12" TextColor="#0F172A" />
+
+                                                    <Label Grid.Row="1" Grid.Column="0"
+                                                           Text="Cliente:"
+                                                           FontSize="12" FontAttributes="Bold" TextColor="#64748B" />
+                                                    <Label Grid.Row="1" Grid.Column="1"
+                                                           Text="{Binding NombreCliente}"
+                                                           FontSize="12" TextColor="#0F172A"
+                                                           LineBreakMode="TailTruncation" />
+
+                                                    <Label Grid.Row="2" Grid.Column="0"
+                                                           Text="Periodo:"
+                                                           FontSize="12" FontAttributes="Bold" TextColor="#64748B" />
+                                                    <Label Grid.Row="2" Grid.Column="1"
+                                                           Text="{Binding Periodo}"
+                                                           FontSize="12" TextColor="#0F172A" />
+
+                                                    <Label Grid.Row="3" Grid.Column="0"
+                                                           Text="Comp.:"
+                                                           FontSize="12" FontAttributes="Bold" TextColor="#64748B" />
+                                                    <Label Grid.Row="3" Grid.Column="1"
+                                                           Text="{Binding CompPeriodoTexto}"
+                                                           FontSize="12" FontAttributes="Bold" TextColor="#DC2626" />
+
+                                                    <Label Grid.Row="4" Grid.Column="0"
+                                                           Text="Asignado:"
+                                                           FontSize="12" FontAttributes="Bold" TextColor="#64748B" />
+                                                    <Label Grid.Row="4" Grid.Column="1"
+                                                           Text="{Binding FechaTexto}"
+                                                           FontSize="12" TextColor="#64748B" />
+                                                </Grid>
+                                            </VerticalStackLayout>
+
+                                            <!-- Botones de acción -->
+                                            <Grid Grid.Row="2"
+                                                  ColumnDefinitions="*,*"
+                                                  ColumnSpacing="8"
+                                                  Padding="16,0,16,16">
+
+                                                <!-- Ruta GPS -->
+                                                <Frame Grid.Column="0"
+                                                       Padding="0" CornerRadius="10"
+                                                       BorderColor="Transparent"
+                                                       BackgroundColor="#8B5CF6"
+                                                       HasShadow="False">
+                                                    <Button Text="🗺️ Ruta"
+                                                            Style="{StaticResource ActionButton}"
+                                                            BackgroundColor="Transparent"
+                                                            Clicked="OnRutaClicked" />
+                                                </Frame>
+
+                                                <!-- Ejecutar medición -->
+                                                <Frame Grid.Column="1"
+                                                       Padding="0" CornerRadius="10"
+                                                       BorderColor="Transparent"
+                                                       BackgroundColor="#10B981"
+                                                       HasShadow="False">
+                                                    <Button Text="✓ Ejecutar"
+                                                            Style="{StaticResource ActionButton}"
+                                                            BackgroundColor="Transparent"
+                                                            Clicked="OnEjecutarClicked" />
+                                                </Frame>
+                                            </Grid>
+
+                                        </Grid>
+                                    </Frame>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </ScrollView>
+            </RefreshView>
+
+        </Grid>
+
+    </Grid>
+</ContentPage>

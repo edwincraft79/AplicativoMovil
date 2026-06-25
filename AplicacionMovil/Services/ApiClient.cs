@@ -1,4 +1,4 @@
-﻿using AplicacionMovil.Data;
+﻿using AplicacionMovil.Core.Models;
 using System.Net;
 using System.Net.Http.Headers;
 

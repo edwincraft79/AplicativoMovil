@@ -3,139 +3,366 @@
     x:Class="AplicacionMovil.Pages.HomePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    BackgroundColor="#F3F4F6"
+    BackgroundColor="#F1F5F9"
     Title="Inicio">
 
-    <Grid Padding="20">
-        <ScrollView>
-            <VerticalStackLayout Spacing="14">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsEnabled="False" IsVisible="False" />
+    </Shell.BackButtonBehavior>
 
-                <Label Text="Inicio"
-                       FontSize="22"
-                       FontAttributes="Bold"
-                       TextColor="#111827" />
+    <ContentPage.Resources>
 
-                <!-- Tarjeta info operador -->
-                <Frame Padding="14"
-                       CornerRadius="16"
-                       BorderColor="#E5E7EB"
-                       BackgroundColor="White"
-                       HasShadow="False">
-                    <VerticalStackLayout Spacing="6">
-                        <Label Text="Registro Empresarial - Movil"
-                               FontSize="16"
-                               FontAttributes="Bold"
-                               TextColor="#111827" />
-                        <Label x:Name="lblOperador"
-                               Text="Operador: -"
-                               FontSize="13"
-                               TextColor="#6B7280" />
-                        <Label x:Name="lblZonal"
-                               Text="Zonal: -"
-                               FontSize="13"
-                               TextColor="#6B7280" />
-                    </VerticalStackLayout>
-                </Frame>
+        <Style TargetType="Label" x:Key="CardTitleStyle">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="#0F172A" />
+            <Setter Property="LineBreakMode" Value="WordWrap" />
+        </Style>
 
-                <Label Text="Módulos"
-                       FontSize="14"
-                       FontAttributes="Bold"
-                       TextColor="#111827"
-                       Margin="2,6,0,0" />
+        <Style TargetType="Label" x:Key="CardSubtitleStyle">
+            <Setter Property="FontSize" Value="11" />
+            <Setter Property="TextColor" Value="#64748B" />
+            <Setter Property="LineBreakMode" Value="WordWrap" />
+        </Style>
 
-                <!-- Grid de módulos -->
-                <Grid ColumnDefinitions="*,*"
-                      RowDefinitions="Auto,Auto"
-                      ColumnSpacing="12"
-                      RowSpacing="12">
+    </ContentPage.Resources>
 
-                    <!-- Atención Reclamos -->
-                    <Frame Grid.Row="0" Grid.Column="0"
-                           Padding="14"
-                           CornerRadius="16"
-                           BorderColor="#E5E7EB"
-                           BackgroundColor="White"
-                           HasShadow="False">
-                        <VerticalStackLayout Spacing="10">
-                            <Label Text="🧑‍🔧 Atención de Reclamos"
-                                   FontSize="14"
+    <ScrollView>
+        <VerticalStackLayout Padding="0" Spacing="0">
+
+            <!-- ══════════════════════════════════════
+                 HEADER BANNER
+            ══════════════════════════════════════ -->
+            <Frame Padding="0"
+                   CornerRadius="22"
+                   BorderColor="Transparent"
+                   HasShadow="True"
+                   BackgroundColor="#1E3A8A"
+                   Margin="0,0,0,0">
+
+                <Grid RowDefinitions="Auto,Auto" Padding="20,18,20,20" RowSpacing="12">
+
+                    <!-- Logo + Título -->
+                    <Grid Grid.Row="0" ColumnDefinitions="Auto,*" ColumnSpacing="14">
+                        <Image Grid.Column="0"
+                               Source="logo_empresa.png"
+                               WidthRequest="52"
+                               HeightRequest="52"
+                               Aspect="AspectFit"
+                               VerticalOptions="Center"
+                               BackgroundColor="Transparent" />
+
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                            <Label Text="Bienvenido"
+                                   FontSize="22"
                                    FontAttributes="Bold"
-                                   TextColor="#111827" />
-                            <Label Text="Mis OT, ejecutar, historial"
+                                   TextColor="White" />
+                            <Label Text="Registro Empresarial Móvil"
                                    FontSize="12"
-                                   TextColor="#6B7280" />
-                            <Button Text="Ir al módulo"
-                                    CornerRadius="12"
-                                    HeightRequest="42"
-                                    BackgroundColor="#2563EB"
-                                    TextColor="White"
-                                    FontAttributes="Bold"
-                                    Clicked="OnGoReclamosClicked"/>
+                                   TextColor="#93C5FD" />
                         </VerticalStackLayout>
+                    </Grid>
+
+                    <!-- Tarjeta operador -->
+                    <Frame Grid.Row="1"
+                           Padding="14,10"
+                           CornerRadius="12"
+                           BackgroundColor="#1D4ED8"
+                           BorderColor="Transparent"
+                           HasShadow="False">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                            <Label Grid.Column="0"
+                                   Text="👤"
+                                   FontSize="18"
+                                   VerticalOptions="Center" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="1" VerticalOptions="Center">
+                                <Label Text="OPERADOR ACTIVO"
+                                       FontSize="9"
+                                       FontAttributes="Bold"
+                                       TextColor="#93C5FD"
+                                       CharacterSpacing="0.8" />
+                                <Label x:Name="lblOperador"
+                                       Text="—"
+                                       FontSize="13"
+                                       FontAttributes="Bold"
+                                       TextColor="White" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="2"
+                                   Text="📱"
+                                   FontSize="24"
+                                   Opacity="0.4"
+                                   VerticalOptions="Center" />
+                        </Grid>
                     </Frame>
 
-                    <!-- Osinergmin 228 -->
-                    <Frame Grid.Row="0" Grid.Column="1"
-                           Padding="14"
-                           CornerRadius="16"
-                           BorderColor="#E5E7EB"
-                           BackgroundColor="White"
-                           HasShadow="False">
-                        <VerticalStackLayout Spacing="10">
-                            <Label Text="🛠️ Osinergmin 228"
-                                   FontSize="14"
-                                   FontAttributes="Bold"
-                                   TextColor="#111827" />
-                            <Label Text="Deficiencias / OT asignadas"
-                                   FontSize="12"
-                                   TextColor="#6B7280" />
-                            <Button Text="Ir al módulo"
-                                    CornerRadius="12"
-                                    HeightRequest="42"
-                                    BackgroundColor="#2563EB"
-                                    TextColor="White"
-                                    FontAttributes="Bold"
-                                    Clicked="OnGoDeficienciasClicked"/>
-                        </VerticalStackLayout>
-                    </Frame>
+                </Grid>
+            </Frame>
 
-                    <!-- Calidad de Producto -->
-                    <Frame Grid.Row="1" Grid.Column="0"
-                           Padding="14"
-                           CornerRadius="16"
-                           BorderColor="#E5E7EB"
-                           BackgroundColor="White"
-                           HasShadow="False">
-                        <VerticalStackLayout Spacing="10">
-                            <Label Text="⚡ Calidad de Producto"
-                                   FontSize="14"
-                                   FontAttributes="Bold"
-                                   TextColor="#111827" />
-                            <Label Text="Mediciones / OT asignadas"
-                                   FontSize="12"
-                                   TextColor="#6B7280" />
-                            <Button Text="Ir al módulo"
-                                    CornerRadius="12"
-                                    HeightRequest="42"
-                                    BackgroundColor="#2563EB"
-                                    TextColor="White"
-                                    FontAttributes="Bold"
-                                    Clicked="OnGoCalidadClicked"/>
-                        </VerticalStackLayout>
-                    </Frame>
+            <!-- ══════════════════════════════════════
+                 MÓDULOS
+            ══════════════════════════════════════ -->
+            <VerticalStackLayout Padding="16,18,16,0" Spacing="0">
 
-                    <!-- (Opcional) Deja el 4to slot libre por ahora -->
+                <!-- Título sección -->
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10" Margin="2,0,0,14">
+                    <BoxView Grid.Column="0"
+                             WidthRequest="4"
+                             HeightRequest="20"
+                             CornerRadius="2"
+                             BackgroundColor="#3B82F6"
+                             VerticalOptions="Center" />
+                    <Label Grid.Column="1"
+                           Text="Módulos Disponibles"
+                           FontSize="15"
+                           FontAttributes="Bold"
+                           TextColor="#1E3A8A"
+                           VerticalOptions="Center" />
                 </Grid>
 
-                <Button Text="Cerrar sesión"
-                        BackgroundColor="#DC2626"
-                        TextColor="White"
-                        CornerRadius="14"
-                        HeightRequest="48"
-                        FontAttributes="Bold"
-                        Margin="0,10,0,0"
-                        Clicked="OnLogoutClicked"/>
+                <!-- Grid 2×3 de módulos -->
+                <Grid ColumnDefinitions="*,*"
+                      RowDefinitions="Auto,Auto,Auto"
+                      ColumnSpacing="12"
+                      RowSpacing="12"
+                      Margin="0,0,0,16">
+
+                    <!-- ╔═══════════════════╗
+                         ║  1. RECLAMOS      ║
+                         ╚═══════════════════╝ -->
+                    <Frame Grid.Row="0" Grid.Column="0"
+                           Padding="0"
+                           CornerRadius="18"
+                           BorderColor="Transparent"
+                           BackgroundColor="White"
+                           HasShadow="True">
+                        <Grid RowDefinitions="6,*,Auto">
+
+                            <!-- Barra top azul -->
+                            <BoxView Grid.Row="0"
+                                     BackgroundColor="#1D4ED8"
+                                     CornerRadius="18" />
+
+                            <VerticalStackLayout Grid.Row="1" Padding="14,12,14,8" Spacing="5">
+                                <Frame Padding="8"
+                                       CornerRadius="10"
+                                       BackgroundColor="#EFF6FF"
+                                       BorderColor="Transparent"
+                                       HasShadow="False"
+                                       HorizontalOptions="Start">
+                                    <Label Text="🧑‍🔧" FontSize="22" />
+                                </Frame>
+                                <Label Text="Atención de Reclamos"
+                                       Style="{StaticResource CardTitleStyle}" />
+                                <Label Text="Mis OT, ejecutar, historial"
+                                       Style="{StaticResource CardSubtitleStyle}" />
+                            </VerticalStackLayout>
+
+                            <Button Grid.Row="2"
+                                    Text="Abrir →"
+                                    BackgroundColor="#1D4ED8"
+                                    TextColor="White"
+                                    FontAttributes="Bold"
+                                    FontSize="13"
+                                    CornerRadius="12"
+                                    HeightRequest="40"
+                                    Margin="14,0,14,14"
+                                    Clicked="OnGoReclamosClicked" />
+                        </Grid>
+                    </Frame>
+
+                    <!-- ╔═══════════════════╗
+                         ║  2. DEFICIENCIAS  ║
+                         ╚═══════════════════╝ -->
+                    <Frame Grid.Row="0" Grid.Column="1"
+                           Padding="0"
+                           CornerRadius="18"
+                           BorderColor="Transparent"
+                           BackgroundColor="White"
+                           HasShadow="True">
+                        <Grid RowDefinitions="6,*,Auto">
+
+                            <!-- Barra top verde -->
+                            <BoxView Grid.Row="0"
+                                     BackgroundColor="#166534"
+                                     CornerRadius="18" />
+
+                            <VerticalStackLayout Grid.Row="1" Padding="14,12,14,8" Spacing="5">
+                                <Frame Padding="8"
+                                       CornerRadius="10"
+                                       BackgroundColor="#F0FDF4"
+                                       BorderColor="Transparent"
+                                       HasShadow="False"
+                                       HorizontalOptions="Start">
+                                    <Label Text="🛠️" FontSize="22" />
+                                </Frame>
+                                <Label Text="Osinergmin 228"
+                                       Style="{StaticResource CardTitleStyle}" />
+                                <Label Text="Deficiencias / OT asignadas"
+                                       Style="{StaticResource CardSubtitleStyle}" />
+                            </VerticalStackLayout>
+
+                            <Button Grid.Row="2"
+                                    Text="Abrir →"
+                                    BackgroundColor="#166534"
+                                    TextColor="White"
+                                    FontAttributes="Bold"
+                                    FontSize="13"
+                                    CornerRadius="12"
+                                    HeightRequest="40"
+                                    Margin="14,0,14,14"
+                                    Clicked="OnGoDeficienciasClicked" />
+                        </Grid>
+                    </Frame>
+
+                    <!-- ╔═══════════════════╗
+                         ║  3. CALIDAD       ║
+                         ╚═══════════════════╝ -->
+                    <Frame Grid.Row="1" Grid.Column="0"
+                           Padding="0"
+                           CornerRadius="18"
+                           BorderColor="Transparent"
+                           BackgroundColor="White"
+                           HasShadow="True">
+                        <Grid RowDefinitions="6,*,Auto">
+
+                            <!-- Barra top naranja -->
+                            <BoxView Grid.Row="0"
+                                     BackgroundColor="#D97706"
+                                     CornerRadius="18" />
+
+                            <VerticalStackLayout Grid.Row="1" Padding="14,12,14,8" Spacing="5">
+                                <Frame Padding="8"
+                                       CornerRadius="10"
+                                       BackgroundColor="#FFFBEB"
+                                       BorderColor="Transparent"
+                                       HasShadow="False"
+                                       HorizontalOptions="Start">
+                                    <Label Text="⚡" FontSize="22" />
+                                </Frame>
+                                <Label Text="Calidad de Producto"
+                                       Style="{StaticResource CardTitleStyle}" />
+                                <Label Text="Mediciones / OT asignadas"
+                                       Style="{StaticResource CardSubtitleStyle}" />
+                            </VerticalStackLayout>
+
+                            <Button Grid.Row="2"
+                                    Text="Abrir →"
+                                    BackgroundColor="#D97706"
+                                    TextColor="White"
+                                    FontAttributes="Bold"
+                                    FontSize="13"
+                                    CornerRadius="12"
+                                    HeightRequest="40"
+                                    Margin="14,0,14,14"
+                                    Clicked="OnGoCalidadClicked" />
+                        </Grid>
+                    </Frame>
+
+                    <!-- ╔══════════════════════════╗
+                         ║  4. IDENTIFICACIÓN DEF.  ║
+                         ╚══════════════════════════╝ -->
+                    <Frame Grid.Row="1" Grid.Column="1"
+                           Padding="0"
+                           CornerRadius="18"
+                           BorderColor="Transparent"
+                           BackgroundColor="White"
+                           HasShadow="True">
+                        <Grid RowDefinitions="6,*,Auto">
+
+                            <!-- Barra top teal -->
+                            <BoxView Grid.Row="0"
+                                     BackgroundColor="#0F766E"
+                                     CornerRadius="18" />
+
+                            <VerticalStackLayout Grid.Row="1" Padding="14,12,14,8" Spacing="5">
+                                <Frame Padding="8"
+                                       CornerRadius="10"
+                                       BackgroundColor="#F0FDFA"
+                                       BorderColor="Transparent"
+                                       HasShadow="False"
+                                       HorizontalOptions="Start">
+                                    <Label Text="🔍" FontSize="22" />
+                                </Frame>
+                                <Label Text="Identificación de Deficiencias"
+                                       Style="{StaticResource CardTitleStyle}" />
+                                <Label Text="Registro de inspección en campo"
+                                       Style="{StaticResource CardSubtitleStyle}" />
+                            </VerticalStackLayout>
+
+                            <Button Grid.Row="2"
+                                    Text="Abrir →"
+                                    BackgroundColor="#0F766E"
+                                    TextColor="White"
+                                    FontAttributes="Bold"
+                                    FontSize="13"
+                                    CornerRadius="12"
+                                    HeightRequest="40"
+                                    Margin="14,0,14,14"
+                                    Clicked="OnGoInspeccionClicked" />
+                        </Grid>
+                    </Frame>
+
+                    <!-- ╔═══════════════════════╗
+                         ║  5. MANTENIMIENTO     ║
+                         ╚═══════════════════════╝ -->
+                    <Frame Grid.Row="2" Grid.Column="0"
+                           Padding="0"
+                           CornerRadius="18"
+                           BorderColor="Transparent"
+                           BackgroundColor="White"
+                           HasShadow="True">
+                        <Grid RowDefinitions="6,*,Auto">
+
+                            <!-- Barra top violeta -->
+                            <BoxView Grid.Row="0"
+                                     BackgroundColor="#7C3AED"
+                                     CornerRadius="18" />
+
+                            <VerticalStackLayout Grid.Row="1" Padding="14,12,14,8" Spacing="5">
+                                <Frame Padding="8"
+                                       CornerRadius="10"
+                                       BackgroundColor="#F5F3FF"
+                                       BorderColor="Transparent"
+                                       HasShadow="False"
+                                       HorizontalOptions="Start">
+                                    <Label Text="🔧" FontSize="22" />
+                                </Frame>
+                                <Label Text="Mantenimiento"
+                                       Style="{StaticResource CardTitleStyle}" />
+                                <Label Text="OTs asignadas desde web"
+                                       Style="{StaticResource CardSubtitleStyle}" />
+                            </VerticalStackLayout>
+
+                            <Button Grid.Row="2"
+                                    Text="Abrir →"
+                                    BackgroundColor="#7C3AED"
+                                    TextColor="White"
+                                    FontAttributes="Bold"
+                                    FontSize="13"
+                                    CornerRadius="12"
+                                    HeightRequest="40"
+                                    Margin="14,0,14,14"
+                                    Clicked="OnGoMantenimientoClicked" />
+                        </Grid>
+                    </Frame>
+
+                </Grid>
+
             </VerticalStackLayout>
-        </ScrollView>
-    </Grid>
+
+            <!-- ══════════════════════════════════════
+                 BOTÓN CERRAR SESIÓN
+            ══════════════════════════════════════ -->
+            <Button Text="🚪  Cerrar Sesión"
+                    BackgroundColor="#DC2626"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    FontSize="15"
+                    CornerRadius="14"
+                    HeightRequest="50"
+                    Margin="16,0,16,24"
+                    Clicked="OnLogoutClicked" />
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
