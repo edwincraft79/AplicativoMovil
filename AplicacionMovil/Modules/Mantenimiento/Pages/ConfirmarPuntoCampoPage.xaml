@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="AplicacionMovil.Modules.Mantenimiento.Pages.ConfirmarPuntoCampoPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title=""
+    BackgroundColor="#F5F3FF">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- ══ BARRA SUPERIOR ══════════════════════════════════════════════ -->
+        <Frame Grid.Row="0" Padding="0" CornerRadius="0"
+               BorderColor="Transparent" BackgroundColor="White" HasShadow="True">
+            <Grid RowDefinitions="Auto,Auto" Padding="14,10,14,10">
+
+                <Grid Grid.Row="0" ColumnDefinitions="*" Margin="0,0,0,6">
+                    <VerticalStackLayout Grid.Column="0" Spacing="1">
+                        <Label Text="🗺️ Confirmar Ubicación"
+                               FontSize="16" FontAttributes="Bold" TextColor="#0F172A" />
+                        <Label x:Name="lblEstadoMapa"
+                               Text="Obteniendo ubicación..." FontSize="11" TextColor="#64748B" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <Button Grid.Column="0" Text="← Volver"
+                            FontSize="12" FontAttributes="Bold" TextColor="White"
+                            BackgroundColor="#64748B" CornerRadius="10" HeightRequest="34"
+                            Clicked="OnVolverClicked" />
+                    <Button Grid.Column="1" Text="📍 Mi ubicación"
+                            FontSize="12" FontAttributes="Bold" TextColor="White"
+                            BackgroundColor="#16A34A" CornerRadius="10" HeightRequest="34"
+                            Clicked="OnUsarUbicacionClicked" />
+                </Grid>
+            </Grid>
+        </Frame>
+
+        <!-- ══ MAPA LEAFLET (WebView) ═══════════════════════════════════════ -->
+        <WebView Grid.Row="1"
+                 x:Name="mapaWebView"
+                 Navigating="OnMapaNavigating" />
+
+        <!-- ══ PANEL DE ACCIONES ═══════════════════════════════════════════ -->
+        <Frame Grid.Row="2" Padding="14,12" CornerRadius="0"
+               BorderColor="#DDD6FE" BackgroundColor="White" HasShadow="True">
+            <VerticalStackLayout Spacing="8">
+                <Label x:Name="lblAyuda"
+                       Text="Arrastra el marcador morado a la posición exacta según la red mostrada. Toca una subestación (⚡) para ver su red secundaria."
+                       FontSize="11" TextColor="#64748B" />
+                <Button Text="Confirmar ubicación →"
+                        FontSize="14" FontAttributes="Bold"
+                        TextColor="White" BackgroundColor="#7C3AED"
+                        CornerRadius="10" HeightRequest="44"
+                        Clicked="OnConfirmarClicked" />
+            </VerticalStackLayout>
+        </Frame>
+
+    </Grid>
+</ContentPage>

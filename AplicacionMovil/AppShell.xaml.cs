@@ -2,6 +2,7 @@
 using AplicacionMovil.Modules.Deficiencias.Pages;
 using AplicacionMovil.Modules.Calidad.Pages;
 using AplicacionMovil.Modules.Mantenimiento.Pages;
+using AplicacionMovil.Modules.Suministros.Pages;
 
 namespace AplicacionMovil;
 
@@ -32,6 +33,12 @@ public partial class AppShell : Shell
         Routing.RegisterRoute(nameof(MisOtMantenimientoPage), typeof(MisOtMantenimientoPage));
         Routing.RegisterRoute(nameof(EjecutarMantenimientoPage), typeof(EjecutarMantenimientoPage));
         Routing.RegisterRoute(nameof(MapaCampoPage), typeof(MapaCampoPage));
+        Routing.RegisterRoute(nameof(ConfirmarPuntoCampoPage), typeof(ConfirmarPuntoCampoPage));
         Routing.RegisterRoute(nameof(RegistroItemCampoPage), typeof(RegistroItemCampoPage));
+
+        // ✅ Suministros
+        Routing.RegisterRoute(nameof(MisSuministrosPage), typeof(MisSuministrosPage));
+        Routing.RegisterRoute(nameof(MapaSuministroPage), typeof(MapaSuministroPage));
+        Routing.RegisterRoute(nameof(ConfirmarSuministroPage), typeof(ConfirmarSuministroPage));
     }
 }

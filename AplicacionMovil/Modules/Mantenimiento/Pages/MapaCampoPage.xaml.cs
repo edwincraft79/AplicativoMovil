@@ -188,14 +188,18 @@ if (features.length > 0) {
         if (_featureSeleccionado == null) return;
         panelFeature.IsVisible = false;
 
-        await Shell.Current.GoToAsync(nameof(RegistroItemCampoPage), new Dictionary<string, object>
+        // Primero se confirma/ajusta la ubicación en el mapa (red primaria + secundaria),
+        // como en Suministros; desde ahí se pasa a llenar ítems, fotos y observación.
+        await Shell.Current.GoToAsync(nameof(ConfirmarPuntoCampoPage), new Dictionary<string, object>
         {
             ["OtId"]         = OtId,
             ["CodigoOT"]     = CodigoOT,
             ["FeatureId"]    = _featureSeleccionado.Id,
             ["FeatureNombre"]= _featureSeleccionado.Nombre,
             ["FeatureTipo"]  = _featureSeleccionado.Tipo,
-            ["EstadoActual"] = _featureSeleccionado.Estado
+            ["EstadoActual"] = _featureSeleccionado.Estado,
+            ["LatInicial"]   = _featureSeleccionado.Latitud?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "",
+            ["LonInicial"]   = _featureSeleccionado.Longitud?.ToString(System.Globalization.CultureInfo.InvariantCulture) ?? "",
         });
     }
 

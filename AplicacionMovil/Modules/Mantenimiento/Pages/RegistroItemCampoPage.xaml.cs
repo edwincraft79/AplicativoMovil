@@ -1,6 +1,7 @@
 using AplicacionMovil.Services;
 using Microsoft.Maui.Devices.Sensors;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Text;
 using System.Text.Json;
 
@@ -12,6 +13,8 @@ namespace AplicacionMovil.Modules.Mantenimiento.Pages;
 [QueryProperty(nameof(FeatureNombre), "FeatureNombre")]
 [QueryProperty(nameof(FeatureTipo), "FeatureTipo")]
 [QueryProperty(nameof(EstadoActual), "EstadoActual")]
+[QueryProperty(nameof(Lat), "Lat")]
+[QueryProperty(nameof(Lon), "Lon")]
 public partial class RegistroItemCampoPage : ContentPage
 {
     public int OtId { get; set; }
@@ -20,6 +23,11 @@ public partial class RegistroItemCampoPage : ContentPage
     public string FeatureNombre { get; set; } = "";
     public string FeatureTipo { get; set; } = "Punto";
     public string EstadoActual { get; set; } = "Pendiente";
+
+    // Vienen del mapa de confirmación (ConfirmarPuntoCampoPage), como string por QueryProperty.
+    // Si no llegan (se entra directo a esta página), queda disponible el botón "Capturar GPS".
+    public string? Lat { get; set; }
+    public string? Lon { get; set; }
 
     private double? _gpsLat;
     private double? _gpsLon;
@@ -40,6 +48,16 @@ public partial class RegistroItemCampoPage : ContentPage
         base.OnAppearing();
         lblTitulo.Text    = FeatureNombre;
         lblSubtitulo.Text = $"{FeatureTipo} · OT {CodigoOT} · Estado: {EstadoActual}";
+
+        if (double.TryParse(Lat, NumberStyles.Float, CultureInfo.InvariantCulture, out var lat) &&
+            double.TryParse(Lon, NumberStyles.Float, CultureInfo.InvariantCulture, out var lon))
+        {
+            _gpsLat = lat;
+            _gpsLon = lon;
+            lblGps.Text = $"📍 {lat:F6}, {lon:F6}  (confirmado en el mapa)";
+            lblGps.TextColor = Color.FromArgb("#22C55E");
+        }
+
         await CargarItemsPlanAsync();
     }
 
