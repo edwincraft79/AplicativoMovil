@@ -52,7 +52,7 @@
                             Clicked="OnVolverClicked" />
                     <Button Grid.Column="1"
                             x:Name="btnGps"
-                            Text="📍 Mi GPS"
+                            Text="🗺️ Ver mapa"
                             Style="{StaticResource HeaderButton}"
                             BackgroundColor="#0EA5E9" HeightRequest="36"
                             Clicked="OnObtenerGpsClicked" />
@@ -100,7 +100,7 @@
                         <Label Text="📍 GPS en Campo"
                                FontSize="13" FontAttributes="Bold" TextColor="#4C1D95" />
                         <Label x:Name="lblGps"
-                               Text="Presiona 'Mi GPS' para capturar coordenadas"
+                               Text="Presiona 'Ver mapa' para ubicar el punto sobre la red GIS"
                                FontSize="12" TextColor="#64748B"
                                HorizontalTextAlignment="Center" />
                         <Label x:Name="lblPrecision"

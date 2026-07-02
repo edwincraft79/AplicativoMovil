@@ -13,6 +13,7 @@ namespace AplicacionMovil.Modules.Mantenimiento.Pages;
 [QueryProperty(nameof(EstadoActual), "EstadoActual")]
 [QueryProperty(nameof(LatInicial), "LatInicial")]
 [QueryProperty(nameof(LonInicial), "LonInicial")]
+[QueryProperty(nameof(ModoRetorno), "ModoRetorno")]
 public partial class ConfirmarPuntoCampoPage : ContentPage
 {
     public int OtId { get; set; }
@@ -25,6 +26,11 @@ public partial class ConfirmarPuntoCampoPage : ContentPage
     // Llegan como string porque Shell no pasa nulls de forma confiable en QueryProperty.
     public string? LatInicial { get; set; }
     public string? LonInicial { get; set; }
+
+    // "ejecucion" = viene de EjecutarMantenimientoPage y se debe volver ahí con el punto
+    // confirmado (preserva lo que el técnico ya llenó). Vacío/otro = flujo original por
+    // feature GIS, continúa hacia RegistroItemCampoPage.
+    public string? ModoRetorno { get; set; }
 
     private double _lat;
     private double _lon;
@@ -317,6 +323,16 @@ function confirmarPunto() {
 
             var lat = double.TryParse(query.GetValueOrDefault("lat"), NumberStyles.Float, CultureInfo.InvariantCulture, out var la) ? la : _lat;
             var lon = double.TryParse(query.GetValueOrDefault("lon"), NumberStyles.Float, CultureInfo.InvariantCulture, out var lo) ? lo : _lon;
+
+            if (ModoRetorno == "ejecucion")
+            {
+                // Vuelve a EjecutarMantenimientoPage (misma instancia: conserva resultado,
+                // observaciones y fotos ya ingresados) con el punto confirmado.
+                var latStr = lat.ToString(CultureInfo.InvariantCulture);
+                var lonStr = lon.ToString(CultureInfo.InvariantCulture);
+                await Shell.Current.GoToAsync($"..?Lat={Uri.EscapeDataString(latStr)}&Lon={Uri.EscapeDataString(lonStr)}");
+                return;
+            }
 
             await Shell.Current.GoToAsync(nameof(RegistroItemCampoPage), new Dictionary<string, object>
             {

@@ -1,5 +1,6 @@
 using AplicacionMovil.Services;
 using Microsoft.Maui.Devices.Sensors;
+using System.Globalization;
 using System.Text;
 using System.Text.Json;
 
@@ -11,6 +12,8 @@ namespace AplicacionMovil.Modules.Mantenimiento.Pages;
 [QueryProperty(nameof(Nombre), "Nombre")]
 [QueryProperty(nameof(ReferenciaUbicacion), "ReferenciaUbicacion")]
 [QueryProperty(nameof(DefinicionProblema), "DefinicionProblema")]
+[QueryProperty(nameof(Lat), "Lat")]
+[QueryProperty(nameof(Lon), "Lon")]
 public partial class EjecutarMantenimientoPage : ContentPage
 {
     public int OtId { get; set; }
@@ -19,6 +22,10 @@ public partial class EjecutarMantenimientoPage : ContentPage
     public string Nombre { get; set; } = "";
     public string ReferenciaUbicacion { get; set; } = "";
     public string DefinicionProblema { get; set; } = "";
+
+    // Llegan al volver de ConfirmarPuntoCampoPage (mapa con red primaria/secundaria).
+    public string? Lat { get; set; }
+    public string? Lon { get; set; }
 
     private double? _gpsLat;
     private double? _gpsLon;
@@ -43,61 +50,34 @@ public partial class EjecutarMantenimientoPage : ContentPage
         lblNombre.Text            = Nombre;
         lblReferenciaUbicacion.Text = ReferenciaUbicacion;
         lblDefinicionProblema.Text  = DefinicionProblema;
+
+        if (double.TryParse(Lat, NumberStyles.Float, CultureInfo.InvariantCulture, out var lat) &&
+            double.TryParse(Lon, NumberStyles.Float, CultureInfo.InvariantCulture, out var lon))
+        {
+            _gpsLat = lat;
+            _gpsLon = lon;
+            _gpsPrecision = null;
+            lblGps.Text       = $"📌 {lat:F6}, {lon:F6}";
+            lblGps.TextColor  = Color.FromArgb("#4C1D95");
+            lblPrecision.Text = "Ubicación confirmada en el mapa";
+        }
     }
 
     private async void OnObtenerGpsClicked(object sender, EventArgs e)
     {
-        try
+        // Abre el mapa (red primaria + secundaria) para ubicar el punto con precisión,
+        // igual que en Suministros, en vez de capturar el GPS crudo del dispositivo a ciegas.
+        var latIni = _gpsLat?.ToString(CultureInfo.InvariantCulture) ?? "";
+        var lonIni = _gpsLon?.ToString(CultureInfo.InvariantCulture) ?? "";
+
+        await Shell.Current.GoToAsync(nameof(ConfirmarPuntoCampoPage), new Dictionary<string, object>
         {
-            btnGps.IsEnabled = false;
-            btnGps.Text      = "📍 Obteniendo...";
-
-            var status = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
-            if (status != PermissionStatus.Granted)
-                status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
-
-            if (status != PermissionStatus.Granted)
-            {
-                await DisplayAlert("Permiso denegado", "Se necesita permiso de ubicación.", "OK");
-                return;
-            }
-
-            lblGps.Text      = "Obteniendo GPS...";
-            lblGps.TextColor = Color.FromArgb("#0EA5E9");
-
-            var request  = new GeolocationRequest(GeolocationAccuracy.Best, TimeSpan.FromSeconds(15));
-            var location = await Geolocation.Default.GetLocationAsync(request);
-
-            if (location == null)
-            {
-                lblGps.Text        = "No se pudo obtener GPS. Intente de nuevo.";
-                lblGps.TextColor   = Color.FromArgb("#DC2626");
-                lblPrecision.Text  = "";
-                return;
-            }
-
-            _gpsLat       = location.Latitude;
-            _gpsLon       = location.Longitude;
-            _gpsPrecision = location.Accuracy;
-
-            lblGps.Text       = $"📌 {_gpsLat.Value:F6}, {_gpsLon.Value:F6}";
-            lblGps.TextColor  = Color.FromArgb("#4C1D95");
-            lblPrecision.Text = $"📏 Precisión: {_gpsPrecision?.ToString("F1") ?? "?"} m";
-
-            if (_gpsPrecision > 30)
-                await DisplayAlert("Precisión baja",
-                    $"La precisión es de {_gpsPrecision:F1}m. Se recomienda menos de 30m.", "OK");
-        }
-        catch (Exception ex)
-        {
-            lblGps.Text      = $"Error GPS: {ex.Message}";
-            lblGps.TextColor = Color.FromArgb("#DC2626");
-        }
-        finally
-        {
-            btnGps.IsEnabled = true;
-            btnGps.Text      = "📍 Mi GPS";
-        }
+            ["OtId"] = OtId,
+            ["CodigoOT"] = CodigoOT,
+            ["ModoRetorno"] = "ejecucion",
+            ["LatInicial"] = latIni,
+            ["LonInicial"] = lonIni,
+        });
     }
 
     private async void OnTomarFotoClicked(object sender, EventArgs e)
