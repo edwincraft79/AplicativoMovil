@@ -27,6 +27,17 @@ public partial class EjecutarMantenimientoPage : ContentPage
     public string? Lat { get; set; }
     public string? Lon { get; set; }
 
+    // Al volver del mapa con "..?Lat=..&Lon=..", Shell puede reasignar TODAS las
+    // [QueryProperty] de la ruta, incluso las que no vienen en esa query string
+    // (quedan en null). Se cachean acá la primera vez que llegan con datos, y
+    // OnAppearing usa siempre estos campos en vez de las propiedades crudas.
+    private int _otId;
+    private string _tipoMantenimiento = "";
+    private string _codigoOT = "";
+    private string _nombre = "";
+    private string _referenciaUbicacion = "";
+    private string _definicionProblema = "";
+
     private double? _gpsLat;
     private double? _gpsLon;
     private double? _gpsPrecision;
@@ -41,15 +52,22 @@ public partial class EjecutarMantenimientoPage : ContentPage
     {
         base.OnAppearing();
 
-        lblSubtitulo.Text = $"{CodigoOT} · {TipoMantenimiento}";
-        lblTipo.Text = TipoMantenimiento;
-        lblTipo.TextColor = TipoMantenimiento.StartsWith("C", StringComparison.OrdinalIgnoreCase)
+        if (OtId != 0) _otId = OtId;
+        if (!string.IsNullOrWhiteSpace(TipoMantenimiento)) _tipoMantenimiento = TipoMantenimiento;
+        if (!string.IsNullOrWhiteSpace(CodigoOT)) _codigoOT = CodigoOT;
+        if (!string.IsNullOrWhiteSpace(Nombre)) _nombre = Nombre;
+        if (!string.IsNullOrWhiteSpace(ReferenciaUbicacion)) _referenciaUbicacion = ReferenciaUbicacion;
+        if (!string.IsNullOrWhiteSpace(DefinicionProblema)) _definicionProblema = DefinicionProblema;
+
+        lblSubtitulo.Text = $"{_codigoOT} · {_tipoMantenimiento}";
+        lblTipo.Text = _tipoMantenimiento;
+        lblTipo.TextColor = _tipoMantenimiento.StartsWith("C", StringComparison.OrdinalIgnoreCase)
             ? Color.FromArgb("#991B1B")
             : Color.FromArgb("#4C1D95");
 
-        lblNombre.Text            = Nombre;
-        lblReferenciaUbicacion.Text = ReferenciaUbicacion;
-        lblDefinicionProblema.Text  = DefinicionProblema;
+        lblNombre.Text            = _nombre;
+        lblReferenciaUbicacion.Text = _referenciaUbicacion;
+        lblDefinicionProblema.Text  = _definicionProblema;
 
         if (double.TryParse(Lat, NumberStyles.Float, CultureInfo.InvariantCulture, out var lat) &&
             double.TryParse(Lon, NumberStyles.Float, CultureInfo.InvariantCulture, out var lon))
@@ -72,8 +90,8 @@ public partial class EjecutarMantenimientoPage : ContentPage
 
         await Shell.Current.GoToAsync(nameof(ConfirmarPuntoCampoPage), new Dictionary<string, object>
         {
-            ["OtId"] = OtId,
-            ["CodigoOT"] = CodigoOT,
+            ["OtId"] = _otId,
+            ["CodigoOT"] = _codigoOT,
             ["ModoRetorno"] = "ejecucion",
             ["LatInicial"] = latIni,
             ["LonInicial"] = lonIni,
@@ -155,8 +173,8 @@ public partial class EjecutarMantenimientoPage : ContentPage
 
             var payload = new
             {
-                otId             = OtId,
-                tipoMantenimiento = TipoMantenimiento,
+                otId             = _otId,
+                tipoMantenimiento = _tipoMantenimiento,
                 fechaHoraAtencion = DateTime.Now,
                 resultado        = pkrResultado.Items[pkrResultado.SelectedIndex],
                 observaciones    = txtObservaciones.Text.Trim(),
